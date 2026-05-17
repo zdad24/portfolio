@@ -4,7 +4,7 @@
 
 A single-page portfolio styled as a pixel-art desktop OS — complete with a functional bash-like terminal, 4 switchable themes, dark/light modes, chiptune sound effects, a konami-code Snake game, and unlockable achievements.
 
-**Live →** [zahadad.dev](https://zahadad.dev)
+**Live →** [zahadadjarif.tech](https://zahadadjarif.tech)
 
 ![React](https://img.shields.io/badge/React-18-blue?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-8-purple?logo=vite)
