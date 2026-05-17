@@ -334,7 +334,7 @@ function Hero({ theme, onScrollTo }) {
               <div className="label-md" style={{ marginBottom: 6 }}>ZAHADAD JARIF</div>
               <div className="mono" style={{ fontSize: 12, color: 'var(--ink-mid)' }}>
                 CLASS &nbsp; SWE / INTERN<br/>
-                LVL &nbsp;&nbsp;&nbsp; 22 · YORK U<br/>
+                LVL &nbsp;&nbsp;&nbsp; 19 · YORK U<br/>
                 TYPE &nbsp;&nbsp; FULL-STACK · AI
               </div>
             </div>
