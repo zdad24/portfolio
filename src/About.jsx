@@ -92,7 +92,7 @@ const COMMANDS = {
     lines: [
       '✓ you came to the right place.',
       '',
-      '  resume → https://drive.google.com/file/d/1rFlHwtfOZNfZfsOCvwcbA0SYMjDjZ1O9/view',
+      '  resume → https://drive.google.com/file/d/1Jcn4e-SahYHEHOJXhfstQj9ebaMcdU7v/view',
       '  email  → zahadad14@gmail.com',
       '  linkedin → in/zahadad-jarif',
       '',

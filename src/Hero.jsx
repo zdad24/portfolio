@@ -276,7 +276,7 @@ function Hero({ theme, onScrollTo }) {
                 </a>
               </Magnetic>
               <Magnetic>
-                <a className="btn" href="https://drive.google.com/file/d/1rFlHwtfOZNfZfsOCvwcbA0SYMjDjZ1O9/view" target="_blank" rel="noopener noreferrer">
+                <a className="btn" href="https://drive.google.com/file/d/1Jcn4e-SahYHEHOJXhfstQj9ebaMcdU7v/view" target="_blank" rel="noopener noreferrer">
                   resume.pdf ↗
                 </a>
               </Magnetic>

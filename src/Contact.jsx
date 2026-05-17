@@ -6,7 +6,7 @@ const LINKS = [
   { k: 'EMAIL', v: 'zahadad14@gmail.com', href: 'mailto:zahadad14@gmail.com', tag: '@' },
   { k: 'LINKEDIN', v: 'linkedin.com/in/zahadad-jarif', href: 'https://linkedin.com/in/zahadad-jarif', tag: 'in' },
   { k: 'GITHUB', v: 'github.com/zdad24', href: 'https://github.com/zdad24', tag: '</>' },
-  { k: 'RESUME', v: 'zahadad-jarif-resume.pdf', href: 'https://drive.google.com/file/d/1rFlHwtfOZNfZfsOCvwcbA0SYMjDjZ1O9/view', tag: 'pdf' },
+  { k: 'RESUME', v: 'zahadad-jarif-resume.pdf', href: 'https://drive.google.com/file/d/1Jcn4e-SahYHEHOJXhfstQj9ebaMcdU7v/view', tag: 'pdf' },
 ];
 
 function Contact() {
