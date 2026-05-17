@@ -62,4 +62,4 @@ Type `help` in the terminal to see all commands. Highlights: `whoami`, `git log`
 
 ## License
 
-MIT © 2026 [Zahadad Jarif](https://zahadad.dev)
+MIT © 2026 [Zahadad Jarif](https://zahadadjarif.tech)
