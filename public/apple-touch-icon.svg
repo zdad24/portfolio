@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" shape-rendering="crispEdges">
+  <rect width="180" height="180" fill="#1a1510"/>
+  <!-- Z (red) -->
+  <g fill="#cf3a2f">
+    <rect x="20" y="30" width="60" height="10"/>
+    <rect x="64" y="40" width="10" height="10"/>
+    <rect x="54" y="50" width="10" height="10"/>
+    <rect x="44" y="60" width="10" height="10"/>
+    <rect x="34" y="70" width="10" height="10"/>
+    <rect x="20" y="80" width="60" height="10"/>
+  </g>
+  <!-- J (yellow) -->
+  <g fill="#f2c037">
+    <rect x="100" y="30" width="50" height="10"/>
+    <rect x="136" y="40" width="10" height="60"/>
+    <rect x="100" y="100" width="26" height="10"/>
+    <rect x="100" y="90" width="10" height="10"/>
+  </g>
+  <!-- Bottom label -->
+  <text x="90" y="150" font-family="monospace" font-size="11" fill="#8a7a6a" text-anchor="middle">zahadadOS</text>
+  <!-- Glow dots -->
+  <rect x="10" y="130" width="4" height="4" fill="#cf3a2f" opacity="0.5"/>
+  <rect x="166" y="130" width="4" height="4" fill="#f2c037" opacity="0.5"/>
+</svg>
