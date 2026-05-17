@@ -3,10 +3,10 @@ import { Win, WinHeading } from './Window.jsx'
 import { Magnetic } from './Hero.jsx'
 
 const LINKS = [
-  { k: 'EMAIL',    v: 'zahadad14@gmail.com',                     href: 'mailto:zahadad14@gmail.com',                   tag: '@' },
-  { k: 'LINKEDIN', v: 'linkedin.com/in/zahadad-jarif',          href: 'https://linkedin.com/in/zahadad-jarif',        tag: 'in' },
-  { k: 'GITHUB',   v: 'github.com/zdad24',                      href: 'https://github.com/zdad24',                    tag: '</>' },
-  { k: 'RESUME',   v: 'zahadad-jarif-resume.pdf',               href: 'https://drive.google.com/file/d/1hab2NeL_9ItNmbaMsMtsVCplvXuxUBdt/view?usp=sharing', tag: 'pdf' },
+  { k: 'EMAIL', v: 'zahadad14@gmail.com', href: 'mailto:zahadad14@gmail.com', tag: '@' },
+  { k: 'LINKEDIN', v: 'linkedin.com/in/zahadad-jarif', href: 'https://linkedin.com/in/zahadad-jarif', tag: 'in' },
+  { k: 'GITHUB', v: 'github.com/zdad24', href: 'https://github.com/zdad24', tag: '</>' },
+  { k: 'RESUME', v: 'zahadad-jarif-resume.pdf', href: 'https://drive.google.com/file/d/1rFlHwtfOZNfZfsOCvwcbA0SYMjDjZ1O9/view', tag: 'pdf' },
 ];
 
 function Contact() {
@@ -99,8 +99,8 @@ function Contact() {
             <span className="mono muted" style={{ fontSize: 10 }}>untitled.txt</span>
           </div>
 
-          <Field label="FROM" value={form.from} onChange={v => setForm({ ...form, from: v })} placeholder="you@company.com"/>
-          <Field label="NAME" value={form.name} onChange={v => setForm({ ...form, name: v })} placeholder="Jane Recruiter"/>
+          <Field label="FROM" value={form.from} onChange={v => setForm({ ...form, from: v })} placeholder="you@company.com" />
+          <Field label="NAME" value={form.name} onChange={v => setForm({ ...form, name: v })} placeholder="Jane Recruiter" />
           <Field
             label="BODY"
             value={form.body}
@@ -122,7 +122,7 @@ function Contact() {
         </form>
       </div>
 
-      <hr className="dashed-rule"/>
+      <hr className="dashed-rule" />
       <div className="row between wrap mono muted" style={{ fontSize: 11, gap: 8 }}>
         <span>© {new Date().getFullYear()} Zahadad Jarif · built in HTML/CSS/JS · no framework, all vibes</span>
         <span>↑↑↓↓←→←→BA</span>
