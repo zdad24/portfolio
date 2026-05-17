@@ -9,6 +9,9 @@ const TERMINAL_BOOT = [
   { type: 'sys', text: '' },
 ];
 
+// Sep 1, 2020 — start of CS journey at York University
+const UPTIME_START = new Date(2020, 8, 1);
+
 /* ============================================================
    Commands registry
    ============================================================ */
@@ -32,7 +35,6 @@ const COMMANDS = {
       '  coffee          ─ essential',
       '  hack            ─ ¯\\_(ツ)_/¯',
       '  matrix          ─ wake up, Neo',
-      '  ask zahadad <q> ─ ask me anything (AI-powered)',
       '  clear           ─ clear the screen',
       '  exit            ─ nope.',
     ],
@@ -351,9 +353,7 @@ const COMMANDS = {
   pwd: () => ({ type: 'block', lines: ['/home/zahadad'] }),
 
   uptime: () => {
-    const start = new Date(2025, 4, 1);
-    const ms = Date.now() - start;
-    const days = Math.floor(ms / 86400000);
+    const days = Math.floor((Date.now() - UPTIME_START) / 86400000);
     return { type: 'block', lines: [`up ${days} days — still shipping`] };
   },
 
@@ -393,26 +393,6 @@ function runCommand(input) {
   if (cmd.startsWith('cd ')) return { type: 'block', lines: [`cd: ${raw.slice(3)}: use ls to see available dirs`] };
   if (cmd.startsWith('ls ')) return COMMANDS.ls();
   if (cmd === 'ls -la' || cmd === 'ls -a') return COMMANDS.ls();
-
-  // AI-powered ask command
-  if (cmd.startsWith('ask zahadad ') || cmd.startsWith('ask ')) {
-    const question = raw.replace(/^ask zahadad\s+/i, '').replace(/^ask\s+/i, '').trim();
-    if (!question) return { type: 'block', lines: ['usage: ask zahadad <question>'] };
-    return {
-      type: 'async',
-      loadingText: '⟳ thinking...',
-      promise: (async () => {
-        const res = await window.claude.complete({
-          messages: [{
-            role: 'user',
-            content: `You are Zahadad Jarif, a 22-year-old CS student at York University (GPA 3.70) and Innovation Lab Engineer Intern at 4D. You co-founded ReRoute, a multimodal transit app for the GTA. You love basketball, Frank Ocean, used bookstores. You're building AI tooling and accessibility software. You're based in Toronto.\n\nAnswer this question in your own voice — casual, direct, smart, no more than 2-3 sentences. No cringe. Be real.\n\nQuestion: ${question}`,
-          }],
-        });
-        window.AchievementsUnlock?.('ai_whisperer');
-        return `zahadad: ${res.trim()}`;
-      })(),
-    };
-  }
 
   return { type: 'block', lines: [`zsh: command not found: ${cmd}  →  try \`help\``] };
 }
@@ -716,23 +696,27 @@ function Line({ item }) {
 }
 
 /* ============================================================
-   Live uptime counter
+   Live uptime counter — isolated component so its 1s ticks
+   don't re-render the entire About section.
    ============================================================ */
-function Uptime() {
-  const start = new Date(2020, 8, 1);
+const UptimeTicker = React.memo(function UptimeTicker() {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
-  const ms = now - start;
+  const ms = now - UPTIME_START;
   const y = Math.floor(ms / (365.25 * 24 * 3600 * 1000));
   const d = Math.floor((ms % (365.25 * 24 * 3600 * 1000)) / (24 * 3600 * 1000));
   const h = Math.floor((ms / (3600 * 1000)) % 24);
   const m = Math.floor((ms / (60 * 1000)) % 60);
   const s = Math.floor((ms / 1000) % 60);
-  return `${y}y ${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
+  return (
+    <span className="mono" style={{ fontVariantNumeric: 'tabular-nums' }}>
+      {`${y}y ${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
+    </span>
+  );
+});
 
 /* ============================================================
    Rotating now-playing
@@ -769,7 +753,6 @@ function NowPlaying() {
    About window
    ============================================================ */
 function About() {
-  const uptime  = Uptime();
   const termApi = useRef(null);
 
   return (
@@ -782,7 +765,7 @@ function About() {
       <WinHeading
         tag="▸ 00_ABOUT"
         title="hi, I'm Zahadad."
-        sub="poke around the terminal below — type `help` to start, or jump to `whoami`, `git log`, `ask zahadad anything`."
+        sub="poke around the terminal below — type `help` to start, or jump to `whoami`, `git log`, `man zahadad`."
       />
       <div className="about-grid">
         <Terminal apiRef={termApi}/>
@@ -794,7 +777,7 @@ function About() {
           }}
         >
           <div className="label" style={{ color: 'var(--accent)' }}>▸ SYSTEM_INFO</div>
-          <Row k="UPTIME"    v={<span className="mono" style={{ fontVariantNumeric: 'tabular-nums' }}>{uptime}</span>}/>
+          <Row k="UPTIME"    v={<UptimeTicker/>}/>
           <Row k="LOCATION"  v="Toronto, ON"/>
           <Row k="STATUS"    v={<span><span style={{color:'var(--accent)'}}>●</span> available · fall 2026</span>}/>
           <Row k="BUILDING"  v="ReRoute · multimodal transit"/>

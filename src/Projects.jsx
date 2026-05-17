@@ -49,8 +49,8 @@ const PROJECTS = [
     blurb: 'Voice-first accessibility platform that converts Canadian government forms into guided voice conversations for blind / low-vision users.',
     impact: 'Built end-to-end in 72hrs · Hackathon winner',
     tech: ['Next.js', 'OpenAI', 'TypeScript', 'Tailwind', 'Vercel'],
-    github: '#',
-    demo: '#',
+    github: null,
+    demo: null,
     comingSoon: true,
     art: 'voice',
   },
@@ -60,8 +60,8 @@ const PROJECTS = [
     blurb: 'Music creation platform that transforms voice memos into produced tracks via a 6-stage async AI pipeline (transcribe → analyze → arrange → generate → master → render).',
     impact: '6-stage AI pipeline · async queue · sub-30s render',
     tech: ['FastAPI', 'Python', 'Redis', 'PostgreSQL', 'Docker'],
-    github: '#',
-    demo: '#',
+    github: null,
+    demo: null,
     comingSoon: true,
     art: 'music',
   },
@@ -71,8 +71,8 @@ const PROJECTS = [
     blurb: 'Containerized, Kubernetes-deployed retrieval-augmented generation API enabling context-aware Q&A over custom doc collections with sub-2s response times.',
     impact: 'Sub-2s p95 · K8s-native · multi-tenant',
     tech: ['Kubernetes', 'Docker', 'FastAPI', 'pgvector', 'GCP'],
-    github: '#',
-    demo: '#',
+    github: null,
+    demo: null,
     comingSoon: true,
     art: 'rag',
   },
@@ -91,7 +91,7 @@ const PROJECTS = [
 
 function ProjectArt({ kind }) {
   // Original, simple pixel-art-style placeholders per project. Stripes + 1-2 shapes max.
-  const common = { width: '100%', height: '100%', shapeRendering: 'crispEdges' };
+  const common = { width: '100%', height: '100%', shapeRendering: 'crispEdges', 'aria-hidden': 'true' };
   if (kind === 'voice') {
     return (
       <svg viewBox="0 0 200 100" {...common}>

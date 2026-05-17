@@ -13,6 +13,8 @@ function Contact() {
   const [copied, setCopied] = useState(null);
   const [form, setForm] = useState({ name: '', from: '', body: '' });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(null);
 
   function copy(text, key) {
     navigator.clipboard?.writeText(text);
@@ -42,6 +44,7 @@ function Contact() {
               key={l.k}
               href={l.href}
               target={l.href?.startsWith('http') ? '_blank' : undefined}
+              rel={l.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
               className="row center"
               style={{
                 gap: 14,
@@ -85,7 +88,30 @@ function Contact() {
 
         {/* Right — message composer */}
         <form
-          onSubmit={(e) => { e.preventDefault(); setSent(true); setTimeout(() => setSent(false), 3200); }}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setSending(true);
+            setError(null);
+            try {
+              const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(form),
+              });
+              const data = await res.json();
+              if (data.ok) {
+                setSent(true);
+                setForm({ name: '', from: '', body: '' });
+                setTimeout(() => setSent(false), 5000);
+              } else {
+                setError(data.error || 'something went wrong');
+              }
+            } catch {
+              setError('network error — try emailing directly');
+            } finally {
+              setSending(false);
+            }
+          }}
           className="col gap-3"
           style={{
             background: 'var(--paper)',
@@ -111,11 +137,15 @@ function Contact() {
 
           <div className="row between center" style={{ marginTop: 4 }}>
             <span className="mono muted" style={{ fontSize: 10 }}>
-              {sent ? '✓ sent (demo — wire up to your inbox)' : `${form.body.length} chars · auto-saved`}
+              {sent
+                ? '✓ sent — I\'ll reply soon'
+                : error
+                  ? `✗ ${error}`
+                  : `${form.body.length} chars · auto-saved`}
             </span>
             <Magnetic>
-              <button type="submit" className="btn btn-primary">
-                ▸ send mail
+              <button type="submit" className="btn btn-primary" disabled={sending || sent}>
+                {sending ? '⟳ sending…' : '▸ send mail'}
               </button>
             </Magnetic>
           </div>
@@ -124,7 +154,7 @@ function Contact() {
 
       <hr className="dashed-rule" />
       <div className="row between wrap mono muted" style={{ fontSize: 11, gap: 8 }}>
-        <span>© {new Date().getFullYear()} Zahadad Jarif · built in HTML/CSS/JS · no framework, all vibes</span>
+        <span>© {new Date().getFullYear()} Zahadad Jarif · built with React + Vite · deployed on Cloudflare</span>
         <span>↑↑↓↓←→←→BA</span>
       </div>
     </Win>

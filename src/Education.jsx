@@ -130,7 +130,7 @@ function Barcode() {
   const widths = [3,1,2,1,3,2,1,1,3,1,2,1,2,3,1,2,1,3,2,1,3,1,2,1];
   let x = 0;
   return (
-    <svg width="120" height="28" viewBox="0 0 120 28" shapeRendering="crispEdges">
+    <svg width="120" height="28" viewBox="0 0 120 28" shapeRendering="crispEdges" aria-hidden="true">
       <rect width="120" height="28" fill="var(--paper)"/>
       {widths.map((w, i) => {
         const b = i % 2 === 0;

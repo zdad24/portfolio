@@ -2,6 +2,7 @@
 Thumbs.db
 .DS_Store
 *.log
+*.stackdump
 node_modules/
 dist/
 Zahadad Jarif - Portfolio.html

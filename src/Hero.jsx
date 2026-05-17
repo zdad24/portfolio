@@ -179,7 +179,7 @@ function PortraitSecret({ onClose }) {
         </div>
         <div style={{ fontSize: 13, lineHeight: 1.7, color: 'rgba(255,255,255,0.8)', marginBottom: 20 }}>
           five clicks on my face.<br/>
-          that's either determination<br/>
+          that&apos;s either determination<br/>
           or you need a better hobby.<br/>
           <br/>
           <span style={{ color: 'var(--accent)' }}>either way — respect.</span>
@@ -262,7 +262,7 @@ function Hero({ theme, onScrollTo }) {
             <p className="mono" style={{ margin: '18px 0 22px', maxWidth: 460 }}>
               SWE Intern <span style={{ color: 'var(--accent)' }}>@ 4D</span> · Computer Science{' '}
               <span style={{ color: 'var(--accent)' }}>@ York University</span>. I prototype
-              AI tools, ship dev infra, and build things that wouldn't exist otherwise.
+              AI tools, ship dev infra, and build things that wouldn&apos;t exist otherwise.
             </p>
             <div className="row gap-3 wrap">
               <Magnetic>

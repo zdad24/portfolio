@@ -13,6 +13,7 @@ function Snake({ onClose, onChirp }) {
   const [over, setOver] = useState(false);
   const [paused, setPaused] = useState(false);
   const dirRef = useRef(dir);
+  // eslint-disable-next-line react-hooks/refs
   dirRef.current = dir;
 
   function placeFood(s) {
@@ -140,7 +141,7 @@ function Snake({ onClose, onChirp }) {
           )}
         </div>
         <footer className="window-statusbar mono">
-          <span>// hidden as a thank-you for typing the code</span>
+          <span>{/* hidden as a thank-you for typing the code */}</span>
           <span>v1.0</span>
         </footer>
       </div>

@@ -682,3 +682,43 @@ a:hover { text-decoration: underline; }
 .between { justify-content: space-between; }
 .wrap { flex-wrap: wrap; }
 .muted { color: var(--ink-mid); }
+
+/* ============================================================
+   Focus-visible — keyboard accessibility
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ============================================================
+   Reduced motion
+   Respects both the OS preference and the in-app motion tweak.
+   The motion tweak sets data-motion="reduced" on <html>.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .crt-overlay { display: none; }
+  .glitchable:hover { animation: none; }
+  .tilt { transition: none; }
+}
+
+html[data-motion="reduced"] * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+html[data-motion="reduced"] .reveal { opacity: 1; transform: none; transition: none; }
+html[data-motion="reduced"] .crt-overlay { display: none; }
+html[data-motion="reduced"] .glitchable:hover { animation: none; }
+html[data-motion="reduced"] .tilt { transition: none; }

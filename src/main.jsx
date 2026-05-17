@@ -15,7 +15,12 @@ import Education from './Education.jsx'
 import Contact from './Contact.jsx'
 import Snake from './Snake.jsx'
 import { AchievementsSystem } from './Achievements.jsx'
-import { TweaksPanel, useTweaks, TweakSection, TweakRadio, TweakToggle } from './tweaks-panel.jsx'
+import { useTweaks } from './use-tweaks.js'
+
+// TweaksPanel is only loaded in dev so it's excluded from the production bundle
+const { TweaksPanel, TweakSection, TweakRadio, TweakToggle } = import.meta.env.DEV
+  ? await import('./tweaks-panel.jsx')
+  : {};
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "pokemon",
@@ -38,11 +43,12 @@ function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  /* ───────── apply data-theme / data-mode on <html> ───────── */
+  /* ───────── apply data-theme / data-mode / data-motion on <html> ───────── */
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', t.theme);
     document.documentElement.setAttribute('data-mode', t.mode);
-  }, [t.theme, t.mode]);
+    document.documentElement.setAttribute('data-motion', t.motion);
+  }, [t.theme, t.mode, t.motion]);
 
   /* ───────── konami code easter egg ───────── */
   useEffect(() => {
@@ -182,42 +188,44 @@ function App() {
 
       <AchievementsSystem/>
 
-      <TweaksPanel title="Tweaks">
-        <TweakSection label="Theme"/>
-        <TweakRadio
-          label="Skin"
-          value={t.theme}
-          options={['pokemon', 'basketball', 'neutral', 'lofi']}
-          onChange={(v) => setTweak('theme', v)}
-        />
-        <TweakRadio
-          label="Mode"
-          value={t.mode}
-          options={['light', 'dark']}
-          onChange={(v) => setTweak('mode', v)}
-        />
-        <TweakSection label="Vibes"/>
-        <TweakToggle
-          label="Sound effects"
-          value={t.sound}
-          onChange={(v) => setTweak('sound', v)}
-        />
-        <TweakToggle
-          label="CRT scanlines (dark)"
-          value={t.crt}
-          onChange={(v) => setTweak('crt', v)}
-        />
-        <TweakRadio
-          label="Motion"
-          value={t.motion}
-          options={['full', 'reduced']}
-          onChange={(v) => setTweak('motion', v)}
-        />
-        <TweakSection label="Tip"/>
-        <div style={{ fontSize: 11, color: 'rgba(41,38,27,.72)', lineHeight: 1.5 }}>
-          Try the Konami code anywhere on the page — <code style={{ fontFamily: 'ui-monospace, monospace' }}>↑↑↓↓←→←→BA</code>.
-        </div>
-      </TweaksPanel>
+      {import.meta.env.DEV && (
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Theme"/>
+          <TweakRadio
+            label="Skin"
+            value={t.theme}
+            options={['pokemon', 'basketball', 'neutral', 'lofi']}
+            onChange={(v) => setTweak('theme', v)}
+          />
+          <TweakRadio
+            label="Mode"
+            value={t.mode}
+            options={['light', 'dark']}
+            onChange={(v) => setTweak('mode', v)}
+          />
+          <TweakSection label="Vibes"/>
+          <TweakToggle
+            label="Sound effects"
+            value={t.sound}
+            onChange={(v) => setTweak('sound', v)}
+          />
+          <TweakToggle
+            label="CRT scanlines (dark)"
+            value={t.crt}
+            onChange={(v) => setTweak('crt', v)}
+          />
+          <TweakRadio
+            label="Motion"
+            value={t.motion}
+            options={['full', 'reduced']}
+            onChange={(v) => setTweak('motion', v)}
+          />
+          <TweakSection label="Tip"/>
+          <div style={{ fontSize: 11, color: 'rgba(41,38,27,.72)', lineHeight: 1.5 }}>
+            Try the Konami code anywhere on the page — <code style={{ fontFamily: 'ui-monospace, monospace' }}>↑↑↓↓←→←→BA</code>.
+          </div>
+        </TweaksPanel>
+      )}
     </>
   );
 }
