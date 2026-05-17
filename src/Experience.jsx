@@ -1,4 +1,5 @@
-/* global React, Win, WinHeading */
+import React from 'react'
+import { Win, WinHeading } from './Window.jsx'
 
 const EXPERIENCE = [
   {
@@ -183,4 +184,4 @@ function Experience() {
   );
 }
 
-window.Experience = Experience;
+export default Experience

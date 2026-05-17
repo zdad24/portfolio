@@ -1,5 +1,5 @@
-/* global React */
-const { useEffect, useRef, useState } = React;
+import React, { useEffect, useRef, useState } from 'react'
+import { Win, WinHeading } from './Window.jsx'
 
 /* ============================================================
    Terminal boot message
@@ -866,4 +866,4 @@ function Bar({ label, pct }) {
   );
 }
 
-window.About = About;
+export default About

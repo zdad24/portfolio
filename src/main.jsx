@@ -1,10 +1,21 @@
-/* global React, ReactDOM, SFX,
-   Cursor, MenuBar, Dock, Win,
-   Hero, About, Projects, Experience, Skills, Education, Contact, Snake,
-   AchievementsSystem,
-   TweaksPanel, useTweaks, TweakSection, TweakRadio, TweakToggle */
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { createRoot } from 'react-dom/client'
+import './styles.css'
 
-const { useEffect, useRef, useState, useCallback } = React;
+import { SFX } from './sfx.js'
+import Cursor from './Cursor.jsx'
+import MenuBar from './MenuBar.jsx'
+import Dock from './Dock.jsx'
+import Hero from './Hero.jsx'
+import About from './About.jsx'
+import Projects from './Projects.jsx'
+import Experience from './Experience.jsx'
+import Skills from './Skills.jsx'
+import Education from './Education.jsx'
+import Contact from './Contact.jsx'
+import Snake from './Snake.jsx'
+import { AchievementsSystem } from './Achievements.jsx'
+import { TweaksPanel, useTweaks, TweakSection, TweakRadio, TweakToggle } from './tweaks-panel.jsx'
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "pokemon",
@@ -211,4 +222,4 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+createRoot(document.getElementById('root')).render(<App/>)

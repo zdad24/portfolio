@@ -1,5 +1,5 @@
-/* global React, Win, WinHeading */
-const { useRef } = React;
+import React, { useRef } from 'react'
+import { Win, WinHeading } from './Window.jsx'
 
 /* ============================================================
    Tilt card — 3D tilt on hover
@@ -291,5 +291,4 @@ function dot(c) {
   return { width: 10, height: 10, borderRadius: 50, background: c, display: 'inline-block', border: '1px solid rgba(0,0,0,0.15)' };
 }
 
-window.Projects = Projects;
-window.TiltCard = TiltCard;
+export default Projects

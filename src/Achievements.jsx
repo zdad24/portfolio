@@ -1,5 +1,4 @@
-/* global React */
-const { useEffect, useState, useRef } = React;
+import React, { useEffect, useState, useRef } from 'react'
 
 /* ============================================================
    Achievement registry
@@ -195,4 +194,4 @@ function AchievementsSystem() {
   );
 }
 
-window.AchievementsSystem = AchievementsSystem;
+export { AchievementsSystem }

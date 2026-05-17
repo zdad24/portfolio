@@ -1,4 +1,5 @@
-/* global React, Win, WinHeading */
+import React from 'react'
+import { Win, WinHeading } from './Window.jsx'
 
 function Education() {
   return (
@@ -141,4 +142,4 @@ function Barcode() {
   );
 }
 
-window.Education = Education;
+export default Education

@@ -1,5 +1,6 @@
-/* global React, Win, WinHeading, Magnetic */
-const { useState } = React;
+import React, { useState } from 'react'
+import { Win, WinHeading } from './Window.jsx'
+import { Magnetic } from './Hero.jsx'
 
 const LINKS = [
   { k: 'EMAIL',    v: 'zahadad14@gmail.com',                     href: 'mailto:zahadad14@gmail.com',                   tag: '@' },
@@ -167,4 +168,4 @@ function Field({ label, value, onChange, placeholder, textarea }) {
   );
 }
 
-window.Contact = Contact;
+export default Contact

@@ -1,5 +1,4 @@
-/* global React */
-const { useEffect, useRef } = React;
+import React, { useEffect, useRef } from 'react'
 
 /* ============================================================
    Dock — bottom app dock with magnetic hover scaling
@@ -58,4 +57,4 @@ function Dock({ items, onLaunch }) {
   );
 }
 
-window.Dock = Dock;
+export default Dock

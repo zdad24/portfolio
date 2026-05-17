@@ -1,5 +1,4 @@
-/* global React */
-const { useEffect, useRef, useState } = React;
+import React from 'react'
 
 /* ============================================================
    Window — the cornerstone OS chrome wrapper
@@ -52,5 +51,4 @@ function WinHeading({ tag, title, sub }) {
   );
 }
 
-window.Win = Win;
-window.WinHeading = WinHeading;
+export { Win, WinHeading }

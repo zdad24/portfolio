@@ -1,5 +1,6 @@
-/* global React */
-const { useEffect, useRef, useState, useCallback } = React;
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { Win } from './Window.jsx'
+import portraitUrl from './portrait.png'
 
 /* ============================================================
    Magnetic button — follows cursor within a radius
@@ -317,7 +318,7 @@ function Hero({ theme, onScrollTo }) {
               }}
             >
               <img
-                src="src/portrait.png"
+                src={portraitUrl}
                 alt="Zahadad Jarif — pixel portrait"
                 onClick={handlePortraitClick}
                 style={{
@@ -361,5 +362,5 @@ const kbdStyle = {
   letterSpacing: '0.5px',
 };
 
-window.Hero = Hero;
-window.Magnetic = Magnetic;
+export default Hero
+export { Magnetic }

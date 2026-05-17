@@ -1,7 +1,7 @@
 /* ============================================================
    Tiny Web Audio chirps — chiptune feel without assets.
    ============================================================ */
-window.SFX = (() => {
+export const SFX = (() => {
   let ctx = null;
   function ac() {
     if (!ctx) {

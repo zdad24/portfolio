@@ -1,5 +1,4 @@
-/* global React */
-const { useEffect, useState } = React;
+import React, { useEffect, useState } from 'react'
 
 /* ============================================================
    Menu bar (top) — non-functional menus + working theme toggles
@@ -66,4 +65,4 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
   );
 }
 
-window.MenuBar = MenuBar;
+export default MenuBar

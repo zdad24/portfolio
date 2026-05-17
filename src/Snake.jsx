@@ -1,5 +1,4 @@
-/* global React */
-const { useEffect, useRef, useState } = React;
+import React, { useEffect, useRef, useState } from 'react'
 
 /* ============================================================
    Snake — easter-egg mini game inside a window modal.
@@ -149,4 +148,4 @@ function Snake({ onClose, onChirp }) {
   );
 }
 
-window.Snake = Snake;
+export default Snake

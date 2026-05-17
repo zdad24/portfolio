@@ -1,5 +1,4 @@
-/* global React */
-const { useEffect, useRef } = React;
+import React, { useEffect, useRef } from 'react'
 
 /* ============================================================
    Custom pixel cursor with subtle trail
@@ -83,4 +82,4 @@ function Cursor() {
   );
 }
 
-window.Cursor = Cursor;
+export default Cursor

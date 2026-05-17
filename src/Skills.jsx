@@ -1,4 +1,5 @@
-/* global React, Win, WinHeading */
+import React from 'react'
+import { Win, WinHeading } from './Window.jsx'
 
 /* ============================================================
    Skills — theme-aware cards. Same data, three visual treatments.
@@ -341,4 +342,4 @@ function Skills({ theme }) {
   );
 }
 
-window.Skills = Skills;
+export default Skills
