@@ -138,7 +138,7 @@ function Contact() {
           <div className="row between center" style={{ marginTop: 4 }}>
             <span className="mono muted" style={{ fontSize: 10 }}>
               {sent
-                ? '✓ sent — I\'ll reply soon'
+                ? '✓ sent — I\'ll reply soon :)'
                 : error
                   ? `✗ ${error}`
                   : `${form.body.length} chars · auto-saved`}
