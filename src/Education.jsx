@@ -31,7 +31,7 @@ function Education() {
           </h3>
           <div className="mono" style={{ fontSize: 12, color: 'var(--ink-soft)', marginBottom: 14 }}>
             Lassonde School of Engineering · Toronto, ON<br/>
-            B.Sc. Hons. Computer Science · GPA 3.70/4.00 · exp. May 2028
+            B.Sc. Hons. Computer Science (Co-op) · GPA 3.70/4.00 · exp. May 2028
           </div>
 
           <div className="col gap-2 mono" style={{ fontSize: 12, color: 'var(--ink-soft)' }}>

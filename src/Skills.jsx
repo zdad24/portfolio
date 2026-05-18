@@ -20,16 +20,16 @@ const LANGS = [
     ball: { pos: '6th', jersey: 6, line: 'Sixth man · clutch every game' }, neutral: 'Postgres / MySQL / pgvector' },
 ];
 
-const MORE_LANGS = ['Java', 'C#', 'Assembly', 'HTML5 / CSS3', 'Bash'];
+const MORE_LANGS = ['C#', 'Assembly', 'HTML5 / CSS3', 'Bash'];
 
 const FRAMEWORKS = [
-  'React', 'Next.js', 'Node.js', 'Express.js', 'FastAPI',
+  'React', 'Next.js', 'Node.js', 'Express.js', 'FastAPI', 'Celery',
   'Firebase', 'MongoDB', 'MySQL', 'PostgreSQL', 'Supabase',
 ];
 
 const TOOLS = [
   'Docker', 'Kubernetes', 'Git', 'GitHub Actions', 'CI/CD',
-  'Google Cloud', 'Vercel', 'Cloudflare', 'Unix/Linux',
+  'Google Cloud', 'Azure', 'ElasticMQ', 'Vercel', 'Cloudflare', 'Unix/Linux',
   'Claude Code', 'Cursor', 'Ollama', 'Figma', 'Jira', 'Postman',
 ];
 

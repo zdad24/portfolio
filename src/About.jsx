@@ -81,7 +81,7 @@ const COMMANDS = {
     lines: [
       "things I love when I'm not in vscode:",
       '  ▸ hooping',
-      '  ▸ used bookstores',
+      '  ▸ lifting weights',
       '  ▸ convincing friends their side projects are startup-shaped',
       '  ▸ lofi + frank ocean on repeat',
     ],
@@ -137,10 +137,10 @@ const COMMANDS = {
     type: 'block',
     lines: [
       'langs:    Python · JS · TS · Java · C/C++ · SQL · Bash',
-      'frame:    React · Next.js · FastAPI · Node · Express',
-      'data:     Postgres · MongoDB · Supabase · Firebase · Redis',
-      'infra:    Docker · K8s · GCP · Vercel · CI/CD',
-      'ai:       OpenAI · Claude · Ollama · pgvector',
+      'frame:    React · Next.js · FastAPI · Node · Express · Celery',
+      'data:     Postgres · MongoDB · Supabase · Firebase · ChromaDB',
+      'infra:    Docker · K8s · GCP · Azure · ElasticMQ · Vercel · CI/CD',
+      'ai:       OpenAI · Gemini · Claude · Ollama · ElevenLabs',
     ],
   }),
 
@@ -157,10 +157,10 @@ const COMMANDS = {
   'cat experience.log': () => ({
     type: 'block',
     lines: [
-      '2025 ─ now    innovation lab engineer intern @ 4D',
-      '2025 ─ now    co-founder @ ReRoute',
-      '2024          software engineer @ One Iota Golf',
-      '2024          software developer & VP events @ YU Blueprint',
+      '2026 ─ now    innovation lab engineer intern @ 4D',
+      '2026 ─ now    co-founder @ ReRoute',
+      '2026          software engineer @ One Iota Golf',
+      '2026 ─ now    software developer & VP events @ YU Blueprint',
     ],
   }),
 
@@ -170,7 +170,7 @@ const COMMANDS = {
     type: 'block',
     lines: [
       'York University · Lassonde School of Engineering',
-      'B.Sc. Hons. Computer Science · GPA 3.70/4.00',
+      'B.Sc. Hons. Computer Science (Co-op) · GPA 3.70/4.00',
       'expected May 2028',
     ],
   }),
@@ -197,10 +197,10 @@ const COMMANDS = {
       '─────────────────────────────────────',
       '2023: wrote my first React component. ugly. shipped it.',
       '2023: joined YU Blueprint. met people who actually build things.',
-      '2024: One Iota Golf — first real prod deploy. 3am push. it worked.',
-      '2024: started ReRoute in a coffee shop on a napkin.',
-      '2025: 4D internship. shipping AI demos on a 1-week cadence.',
-      '2025: ReRoute goes live. real users. real transit data.',
+      '2026: One Iota Golf — first real prod deploy. 3am push. it worked.',
+      '2026: started ReRoute in a coffee shop on a napkin.',
+      '2026: 4D internship. building AI recruiting infra on a 1-week cadence.',
+      '2026: ReRoute goes live. real users. real transit data.',
       '─────────────────────────────────────',
       'still writing this.',
     ],
