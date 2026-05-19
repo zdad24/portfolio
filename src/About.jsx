@@ -44,7 +44,7 @@ const COMMANDS = {
     type: 'block',
     lines: [
       'zahadad jarif.',
-      '2nd-year CS @ York (Lassonde, GPA 3.70).',
+      '3rd-year CS @ York (Lassonde, GPA 3.70).',
       'currently: innovation lab engineer intern @ 4D.',
       'side: co-founding ReRoute — multimodal transit for the GTA.',
       'I build at the intersection of AI tooling, accessibility, and infra',
