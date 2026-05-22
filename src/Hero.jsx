@@ -10,23 +10,35 @@ function Magnetic({ children, strength = 0.35, className = '', ...rest }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let raf = null;
+    let lastX = 0, lastY = 0;
     function onMove(e) {
-      const r = el.getBoundingClientRect();
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height / 2);
-      const dist = Math.hypot(dx, dy);
-      if (dist < 120) {
-        el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
-      } else {
-        el.style.transform = '';
-      }
+      lastX = e.clientX;
+      lastY = e.clientY;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        const r = el.getBoundingClientRect();
+        const dx = lastX - (r.left + r.width / 2);
+        const dy = lastY - (r.top + r.height / 2);
+        const dist = Math.hypot(dx, dy);
+        if (dist < 120) {
+          el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+        } else {
+          el.style.transform = '';
+        }
+      });
     }
-    function reset() { el.style.transform = ''; }
+    function reset() {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      el.style.transform = '';
+    }
     window.addEventListener('mousemove', onMove);
     el.addEventListener('mouseleave', reset);
     return () => {
       window.removeEventListener('mousemove', onMove);
       el.removeEventListener('mouseleave', reset);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [strength]);
   return (
@@ -89,7 +101,7 @@ const GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345
 function rnd(s) { return Array.from(s).map(() => GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]).join(''); }
 
 function GlitchName({ target = 'ZAHADAD JARIF', active }) {
-  const [display, setDisplay] = useState(rnd(target));
+  const [display, setDisplay] = useState(target);
   const [revealed, setRevealed] = useState(0);
   const frame = useRef(null);
 
@@ -208,8 +220,15 @@ function PortraitSecret({ onClose }) {
    ============================================================ */
 function Hero({ theme, onScrollTo }) {
   const [booted, setBooted] = useState(false);
+  const [glitchReady, setGlitchReady] = useState(false);
   const [portraitClicks, setPortraitClicks] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
+
+  useEffect(() => {
+    if (!booted) return;
+    const t = setTimeout(() => setGlitchReady(true), 1000);
+    return () => clearTimeout(t);
+  }, [booted]);
 
   function handlePortraitClick() {
     setPortraitClicks(n => {
@@ -254,9 +273,9 @@ function Hero({ theme, onScrollTo }) {
               className="pixel-xl"
               style={{ margin: '0 0 4px', lineHeight: 0.88, letterSpacing: '-1px' }}
             >
-              <GlitchName target="ZAHADAD" active={booted}/>
+              <GlitchName target="ZAHADAD" active={glitchReady}/>
               <br/>
-              <GlitchName target="JARIF" active={booted}/>
+              <GlitchName target="JARIF" active={glitchReady}/>
               <span style={{ color: 'var(--accent)' }}>.</span>
             </h1>
             <p className="mono" style={{ margin: '18px 0 22px', maxWidth: 460 }}>

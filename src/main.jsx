@@ -37,6 +37,7 @@ function App() {
   const [gamesOpen, setGamesOpen] = useState(false);
   const [bootShake, setBootShake] = useState(false);
   const konami = useRef([]);
+  const isDesktop = typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches;
 
   /* ───────── always start at top ───────── */
   useEffect(() => {
@@ -151,7 +152,7 @@ function App() {
 
   return (
     <>
-      <Cursor/>
+      {isDesktop && <Cursor/>}
       <div className="crt-overlay"></div>
 
       <MenuBar

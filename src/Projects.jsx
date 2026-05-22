@@ -6,23 +6,31 @@ import { Win, WinHeading } from './Window.jsx'
    ============================================================ */
 function TiltCard({ children, max = 8, className = '', style = {} }) {
   const ref = useRef(null);
+  const sheenRef = useRef(null);
+  const rafRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
 
   function onMove(e) {
-    const el = ref.current; if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `perspective(900px) rotateY(${x * max}deg) rotateX(${-y * max}deg) translateY(-3px)`;
-    const sheen = el.querySelector('.sheen');
-    if (sheen) {
-      sheen.style.background = `radial-gradient(400px circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.18), transparent 50%)`;
-    }
+    mouseRef.current = { x: e.clientX, y: e.clientY };
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const el = ref.current; if (!el) return;
+      const r = el.getBoundingClientRect();
+      const { x: ex, y: ey } = mouseRef.current;
+      const x = (ex - r.left) / r.width - 0.5;
+      const y = (ey - r.top) / r.height - 0.5;
+      el.style.transform = `perspective(900px) rotateY(${x * max}deg) rotateX(${-y * max}deg) translateY(-3px)`;
+      if (sheenRef.current) {
+        sheenRef.current.style.background = `radial-gradient(400px circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.18), transparent 50%)`;
+      }
+    });
   }
   function onLeave() {
+    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
     const el = ref.current; if (!el) return;
     el.style.transform = '';
-    const sheen = el.querySelector('.sheen');
-    if (sheen) sheen.style.background = '';
+    if (sheenRef.current) sheenRef.current.style.background = '';
   }
 
   return (
@@ -35,6 +43,7 @@ function TiltCard({ children, max = 8, className = '', style = {} }) {
     >
       {children}
       <div
+        ref={sheenRef}
         className="sheen"
         style={{ position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'overlay' }}
       />
