@@ -478,8 +478,8 @@ function MatrixOverlay({ onDone }) {
     const canvas = ref.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
     const cols = Math.floor(canvas.width / 14);
     const drops = Array(cols).fill(0).map(() => Math.random() * canvas.height);
     const chars = 'アァイィウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ01';
@@ -509,7 +509,7 @@ function MatrixOverlay({ onDone }) {
         pointerEvents: 'none', animation: 'fadeOut 0.6s ease 3.4s forwards',
       }}
     >
-      <canvas ref={ref} style={{ display: 'block' }}/>
+      <canvas ref={ref} style={{ display: 'block', width: '100%', height: '100%' }}/>
       <style>{`@keyframes fadeOut { to { opacity: 0; } }`}</style>
     </div>
   );
