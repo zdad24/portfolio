@@ -57,7 +57,7 @@ const PROJECTS = [
     file: 'echoaccess.tsx',
     blurb: 'Voice-first platform letting blind users complete Canadian government forms hands-free via Gemini & ElevenLabs. Supabase memory layer with row-level security enables cross-form pre-fill for returning users.',
     impact: '2nd @ Hack Days in Six · 72hr build',
-    tech: ['Python', 'FastAPI', 'Gemini', 'ElevenLabs', 'Supabase', 'React', 'TypeScript'],
+    tech: ['FastAPI', 'Gemini', 'ElevenLabs', 'Supabase', 'React', 'TypeScript'],
     github: 'https://github.com/Maristanez/EchoAccess',
     demo: null,
     comingSoon: true,
