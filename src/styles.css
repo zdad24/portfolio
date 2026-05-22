@@ -1,7 +1,8 @@
 /* ============================================================
-   ZahadadOS — design tokens
+   ZahadadOS — design tokens · v2
    ============================================================ */
 :root {
+  --_build:       2;
   /* Surfaces */
   --cream:        #f1ead8;
   --cream-2:      #e8dec5;
