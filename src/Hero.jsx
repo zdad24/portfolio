@@ -220,15 +220,8 @@ function PortraitSecret({ onClose }) {
    ============================================================ */
 function Hero({ theme, onScrollTo }) {
   const [booted, setBooted] = useState(false);
-  const [glitchReady, setGlitchReady] = useState(false);
   const [portraitClicks, setPortraitClicks] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
-
-  useEffect(() => {
-    if (!booted) return;
-    const t = setTimeout(() => setGlitchReady(true), 1000);
-    return () => clearTimeout(t);
-  }, [booted]);
 
   function handlePortraitClick() {
     setPortraitClicks(n => {
@@ -273,9 +266,9 @@ function Hero({ theme, onScrollTo }) {
               className="pixel-xl"
               style={{ margin: '0 0 4px', lineHeight: 0.88, letterSpacing: '-1px' }}
             >
-              <GlitchName target="ZAHADAD" active={glitchReady}/>
+              <GlitchName target="ZAHADAD" active={booted}/>
               <br/>
-              <GlitchName target="JARIF" active={glitchReady}/>
+              <GlitchName target="JARIF" active={booted}/>
               <span style={{ color: 'var(--accent)' }}>.</span>
             </h1>
             <p className="mono" style={{ margin: '18px 0 22px', maxWidth: 460 }}>
