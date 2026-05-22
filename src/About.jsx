@@ -608,7 +608,7 @@ function Terminal({ apiRef }) {
   return (
     <div
       style={{
-        background: 'var(--ink)', color: 'var(--paper)',
+        background: '#15161a', color: '#f1ead8',
         border: '2px solid var(--line)', boxShadow: '4px 4px 0 0 var(--line)',
         fontFamily: "'JetBrains Mono', monospace",
         height: 380, display: 'flex', flexDirection: 'column', cursor: 'text',
@@ -636,7 +636,7 @@ function Terminal({ apiRef }) {
         style={{ flex: 1, padding: '14px 16px', overflowY: 'auto', fontSize: 13, lineHeight: 1.55 }}
       >
         {history.map((h, i) => <Line key={i} item={h}/>)}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--paper)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#f1ead8' }}>
           <Prompt/>
           <input
             ref={inputRef}
@@ -647,7 +647,7 @@ function Terminal({ apiRef }) {
             spellCheck={false}
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
-              color: 'var(--paper)', fontFamily: 'inherit', fontSize: 'inherit',
+              color: '#f1ead8', fontFamily: 'inherit', fontSize: 'inherit',
               caretColor: 'var(--accent)', cursor: 'text',
             }}
           />

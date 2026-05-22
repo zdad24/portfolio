@@ -13,7 +13,7 @@ import Experience from './Experience.jsx'
 import Skills from './Skills.jsx'
 import Education from './Education.jsx'
 import Contact from './Contact.jsx'
-import Snake from './Snake.jsx'
+import GamesFolder from './Games.jsx'
 import { AchievementsSystem } from './Achievements.jsx'
 import { useTweaks } from './use-tweaks.js'
 
@@ -30,11 +30,11 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "motion": "full"
 }/*EDITMODE-END*/;
 
-const THEMES = ['pokemon', 'basketball', 'neutral', 'lofi'];
+const THEMES = ['pokemon', 'basketball'];
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [snakeOpen, setSnakeOpen] = useState(false);
+  const [gamesOpen, setGamesOpen] = useState(false);
   const [bootShake, setBootShake] = useState(false);
   const konami = useRef([]);
 
@@ -58,7 +58,7 @@ function App() {
       konami.current = [...konami.current, k].slice(-SEQ.length);
       if (konami.current.join(',') === SEQ.join(',')) {
         konami.current = [];
-        setSnakeOpen(true);
+        setGamesOpen(true);
         if (t.sound) SFX.win();
         window.AchievementsUnlock?.('konami_master');
       }
@@ -132,24 +132,20 @@ function App() {
 
   /* ───────── dock items ───────── */
   const dockItems = [
+    { id: 'home',        icon: '⌂',    tip: 'home',             target: '__home', style: { fontSize: 22 } },
     { id: 'about',       icon: 'ME',   tip: 'about.md',         target: 'about' },
     { id: 'projects',    icon: '⌘P',   tip: 'projects/',        target: 'projects' },
     { id: 'experience',  icon: 'EX',   tip: 'experience.log',   target: 'experience' },
-    { id: 'skills',      icon: t.theme === 'pokemon' ? 'DEX' : t.theme === 'basketball' ? 'ROS' : 'SKL', tip: 'skills', target: 'skills' },
+    { id: 'skills',      icon: t.theme === 'pokemon' ? 'DEX' : 'ROS', tip: 'skills', target: 'skills' },
     { id: 'education',   icon: 'EDU',  tip: 'education.txt',    target: 'education' },
     { id: 'contact',     icon: '@',    tip: 'contact.app',      target: 'contact' },
     { divider: true },
-    { id: 'theme',  icon: '🎨', tip: `theme: ${t.theme}`, target: '__theme' },
-    { id: 'mode',   icon: t.mode === 'dark' ? '☾' : '☀', tip: `${t.mode} mode`, target: '__mode' },
-    { id: 'sound',  icon: t.sound ? '🔊' : '🔇', tip: `sound: ${t.sound ? 'on' : 'off'}`, target: '__sound' },
-    { id: 'snake',  icon: '🐍', tip: 'easter egg',     target: '__snake' },
+    { id: 'games',       icon: '🎮',   tip: 'games/',           target: '__games' },
   ];
 
   function onLaunch(target) {
-    if (target === '__theme') cycleTheme();
-    else if (target === '__mode') toggleMode();
-    else if (target === '__sound') toggleSound();
-    else if (target === '__snake') { setSnakeOpen(true); if (t.sound) SFX.win(); }
+    if (target === '__home') window.scrollTo({ top: 0, behavior: 'smooth' });
+    else if (target === '__games') { setGamesOpen(true); if (t.sound) SFX.win(); }
     else scrollTo(target);
   }
 
@@ -179,10 +175,11 @@ function App() {
 
       <Dock items={dockItems} onLaunch={onLaunch}/>
 
-      {snakeOpen && (
-        <Snake
-          onClose={() => setSnakeOpen(false)}
+      {gamesOpen && (
+        <GamesFolder
+          onClose={() => setGamesOpen(false)}
           onChirp={() => t.sound && SFX.pickup()}
+          sound={t.sound}
         />
       )}
 
@@ -194,7 +191,7 @@ function App() {
           <TweakRadio
             label="Skin"
             value={t.theme}
-            options={['pokemon', 'basketball', 'neutral', 'lofi']}
+            options={['pokemon', 'basketball']}
             onChange={(v) => setTweak('theme', v)}
           />
           <TweakRadio

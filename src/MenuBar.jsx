@@ -20,7 +20,7 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
     return () => clearInterval(t);
   }, []);
 
-  const themeLabel = { pokemon: 'POKÉ', basketball: 'HOOPS', neutral: 'CRT' }[theme] || theme;
+  const themeLabel = { pokemon: 'POKÉ', basketball: 'HOOPS' }[theme] || theme;
 
   return (
     <nav className="menu-bar">

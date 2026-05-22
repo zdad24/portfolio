@@ -47,6 +47,7 @@ function Dock({ items, onLaunch }) {
             key={it.id}
             className="dock-icon"
             data-tip={it.tip}
+            style={it.style || {}}
             onClick={() => onLaunch(it.target)}
           >
             {it.icon}

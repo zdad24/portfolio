@@ -24,10 +24,6 @@
   --ball-court:   #c98a4b;
   --ball-line:    #ecd9b8;
 
-  /* Neutral CRT */
-  --crt-amber:    #d97742;
-  --crt-green:    #4a9a5a;
-
   /* Active accents — re-bound per theme */
   --accent:       var(--poke-red);
   --accent-2:     var(--poke-yellow);
@@ -65,8 +61,6 @@
   --poke-blue:    #5a8fff;
   --ball-orange:  #ff8a3d;
   --ball-court:   #e0a76d;
-  --crt-amber:    #ff9d5a;
-  --crt-green:    #6cdf80;
 }
 
 [data-theme="pokemon"] {
@@ -82,23 +76,6 @@
 [data-theme="basketball"][data-mode="dark"] {
   --accent-2: #5a78b8;
 }
-[data-theme="neutral"] {
-  --accent:   var(--crt-amber);
-  --accent-2: var(--crt-green);
-  --accent-3: var(--ink-soft);
-}
-
-/* Lo-fi / music theme */
-[data-theme="lofi"] {
-  --accent:   #c9773a;
-  --accent-2: #4a9e8e;
-  --accent-3: #7a5c3a;
-  --cream:        #f5ede0;
-  --cream-2:      #ecdcca;
-  --cream-deep:   #dccbb0;
-  --paper:        #faf4eb;
-}
-
 * { box-sizing: border-box; }
 
 html, body {
