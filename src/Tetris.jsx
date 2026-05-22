@@ -114,14 +114,16 @@ function Tetris({ onClose }) {
   const pausedRef           = useRef(false);
   const tickRef             = useRef(null);
 
-  /* always-fresh tick fn via ref */
-  tickRef.current = () => {
-    setGs(g => {
-      if (g.over || pausedRef.current) return g;
-      if (fits(g.board, g.piece, 0, 1)) return { ...g, piece: { ...g.piece, y: g.piece.y + 1 } };
-      return lockPiece(g);
-    });
-  };
+  /* always-fresh tick fn — updated via effect so the interval always gets latest state */
+  useEffect(() => {
+    tickRef.current = () => {
+      setGs(g => {
+        if (g.over || pausedRef.current) return g;
+        if (fits(g.board, g.piece, 0, 1)) return { ...g, piece: { ...g.piece, y: g.piece.y + 1 } };
+        return lockPiece(g);
+      });
+    };
+  });
 
   /* gravity interval — resets when level changes */
   useEffect(() => {
@@ -331,7 +333,7 @@ function Tetris({ onClose }) {
         )}
 
         <footer className="window-statusbar mono">
-          <span>// ←→↑↓ · X/Z rotate · C hard-drop</span>
+          <span>{'// ←→↑↓ · X/Z rotate · C hard-drop'}</span>
           <span>v1.0</span>
         </footer>
       </div>

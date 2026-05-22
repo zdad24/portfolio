@@ -76,7 +76,7 @@ function GamesFolder({ onClose, onChirp, sound }) {
         </div>
 
         <footer className="window-statusbar mono">
-          <span>// {GAME_LIST.length} games installed</span>
+          <span>{'// '}{GAME_LIST.length}{' games installed'}</span>
           <span>v1.0</span>
         </footer>
       </div>

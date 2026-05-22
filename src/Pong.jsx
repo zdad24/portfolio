@@ -239,7 +239,7 @@ function Pong({ onClose }) {
         </div>
 
         <footer className="window-statusbar mono">
-          <span>// player vs ai</span>
+          <span>{'// player vs ai'}</span>
           <span>v1.0</span>
         </footer>
       </div>
