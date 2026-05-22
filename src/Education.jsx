@@ -64,13 +64,13 @@ function Education() {
           <Stamp
             title="Responsive Web Design"
             org="freeCodeCamp"
-            year="2024"
+            year="2026"
             hours="300 hrs"
           />
           <Stamp
             title="JavaScript Algorithms & Data Structures"
             org="freeCodeCamp"
-            year="2024"
+            year="2026"
             hours="300 hrs"
           />
 
