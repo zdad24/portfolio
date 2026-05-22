@@ -25,7 +25,7 @@ const { TweaksPanel, TweakSection, TweakRadio, TweakToggle } = import.meta.env.D
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "pokemon",
   "mode": "light",
-  "sound": false,
+  "sound": true,
   "crt": true,
   "motion": "full"
 }/*EDITMODE-END*/;
