@@ -250,7 +250,7 @@ const COMMANDS = {
       '',
       'commit 1d9f33a',
       'Date:   last week',
-      '    feat: ReRoute v2 goes live 🚀',
+      '    feat: ReRoute v2 goes live',
       '',
       'commit 0b7a2c1',
       '    chore: refactor life goals (again)',

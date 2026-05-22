@@ -8,25 +8,46 @@ import Tetris from './Tetris.jsx'
    window with Snake, Pong and Tetris.
    ============================================================ */
 
+function SnakeIcon() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4"  y="14" width="6" height="6" fill="currentColor" />
+      <rect x="10" y="14" width="6" height="6" fill="currentColor" />
+      <rect x="16" y="14" width="6" height="6" fill="currentColor" />
+      <rect x="22" y="14" width="6" height="6" fill="currentColor" />
+      <rect x="22" y="8"  width="6" height="6" fill="currentColor" />
+      <rect x="6"  y="6"  width="4" height="4" rx="2" fill="currentColor" opacity="0.55" />
+    </svg>
+  );
+}
+
+function PongIcon() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3"  y="8"  width="3" height="18" fill="currentColor" />
+      <rect x="28" y="8"  width="3" height="18" fill="currentColor" />
+      <rect x="15" y="5"  width="2" height="4"  fill="currentColor" opacity="0.5" />
+      <rect x="15" y="13" width="2" height="4"  fill="currentColor" opacity="0.5" />
+      <rect x="15" y="21" width="2" height="4"  fill="currentColor" opacity="0.5" />
+      <rect x="21" y="15" width="4" height="4"  fill="currentColor" />
+    </svg>
+  );
+}
+
+function TetrisIcon() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="6"  width="10" height="10" fill="currentColor" />
+      <rect x="10" y="16" width="10" height="10" fill="currentColor" />
+      <rect x="20" y="16" width="10" height="10" fill="currentColor" />
+    </svg>
+  );
+}
+
 const GAME_LIST = [
-  {
-    id:   'snake',
-    name: 'Snake',
-    icon: '🐍',
-    sub:  'arrows · classic',
-  },
-  {
-    id:   'pong',
-    name: 'Pong',
-    icon: '🏓',
-    sub:  'WS · vs AI',
-  },
-  {
-    id:   'tetris',
-    name: 'Tetris',
-    icon: '🟦',
-    sub:  '←→↑ · stacker',
-  },
+  { id: 'snake',  name: 'Snake',  Icon: SnakeIcon,  sub: 'arrows · classic' },
+  { id: 'pong',   name: 'Pong',   Icon: PongIcon,   sub: 'WS · vs AI' },
+  { id: 'tetris', name: 'Tetris', Icon: TetrisIcon, sub: '←→↑ · stacker' },
 ];
 
 function GamesFolder({ onClose, onChirp, sound }) {
@@ -87,6 +108,7 @@ function GamesFolder({ onClose, onChirp, sound }) {
 /* ── individual icon tile ──────────────────────── */
 function GameIcon({ game, onLaunch }) {
   const [hover, setHover] = useState(false);
+  const { Icon } = game;
 
   return (
     <button
@@ -108,7 +130,7 @@ function GameIcon({ game, onLaunch }) {
         border: `1px solid ${hover ? 'var(--line)' : 'transparent'}`,
       }}
     >
-      <span style={{ fontSize: 34, lineHeight: 1 }}>{game.icon}</span>
+      <Icon />
       <span
         className="mono"
         style={{ fontSize: 11, fontWeight: 600, color: 'var(--ink)' }}

@@ -280,7 +280,7 @@ function Projects() {
                 ) : null}
                 {p.comingSoon ? (
                   <span className="btn" style={{ opacity: 0.45, cursor: 'default', pointerEvents: 'none' }}>
-                    🔒 coming soon
+                    ⌛ coming soon
                   </span>
                 ) : (
                   <a className="btn btn-primary" href={p.demo} target="_blank" rel="noopener noreferrer">

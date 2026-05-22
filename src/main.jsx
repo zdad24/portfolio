@@ -17,6 +17,19 @@ import GamesFolder from './Games.jsx'
 import { AchievementsSystem } from './Achievements.jsx'
 import { useTweaks } from './use-tweaks.js'
 
+function ControllerIcon() {
+  return (
+    <svg width="22" height="15" viewBox="0 0 22 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0.5" y="2.5" width="21" height="11" rx="3" stroke="currentColor" strokeWidth="1" />
+      <rect x="3"   y="6"   width="5"  height="2"   fill="currentColor" />
+      <rect x="4.5" y="4.5" width="2"  height="5"   fill="currentColor" />
+      <circle cx="15.5" cy="7.5" r="1.5" fill="currentColor" />
+      <circle cx="18.5" cy="7.5" r="1.5" fill="currentColor" />
+      <rect x="9.5" y="6.5" width="3" height="2" rx="1" fill="currentColor" />
+    </svg>
+  );
+}
+
 // TweaksPanel is only loaded in dev so it's excluded from the production bundle
 const { TweaksPanel, TweakSection, TweakRadio, TweakToggle } = import.meta.env.DEV
   ? await import('./tweaks-panel.jsx')
@@ -133,7 +146,7 @@ function App() {
 
   /* ───────── dock items ───────── */
   const dockItems = [
-    { id: 'home',        icon: '⌂',    tip: 'home',             target: '__home', style: { fontSize: 22 } },
+    { id: 'home',        icon: <span style={{ fontSize: 22, position: 'relative', top: '-5px', lineHeight: 1 }}>⌂</span>, tip: 'home', target: '__home' },
     { id: 'about',       icon: 'ME',   tip: 'about.md',         target: 'about' },
     { id: 'projects',    icon: '⌘P',   tip: 'projects/',        target: 'projects' },
     { id: 'experience',  icon: 'EX',   tip: 'experience.log',   target: 'experience' },
@@ -141,7 +154,7 @@ function App() {
     { id: 'education',   icon: 'EDU',  tip: 'education.txt',    target: 'education' },
     { id: 'contact',     icon: '@',    tip: 'contact.app',      target: 'contact' },
     { divider: true },
-    { id: 'games',       icon: '🎮',   tip: 'games/',           target: '__games' },
+    { id: 'games',       icon: <ControllerIcon />, tip: 'games/', target: '__games' },
   ];
 
   function onLaunch(target) {

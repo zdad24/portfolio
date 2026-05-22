@@ -3,6 +3,29 @@ import React, { useEffect, useState } from 'react'
 /* ============================================================
    Menu bar (top) — non-functional menus + working theme toggles
    ============================================================ */
+
+const iconStyle = { verticalAlign: 'middle', display: 'inline-block', position: 'relative', top: -1 };
+
+function SpeakerOnIcon() {
+  return (
+    <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg" style={iconStyle}>
+      <path d="M0 4 L3 4 L6 1 L6 11 L3 8 L0 8 Z" fill="currentColor" />
+      <path d="M8 3 Q10.5 6 8 9" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M9.5 1.5 Q13 6 9.5 10.5" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function SpeakerOffIcon() {
+  return (
+    <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg" style={iconStyle}>
+      <path d="M0 4 L3 4 L6 1 L6 11 L3 8 L0 8 Z" fill="currentColor" />
+      <line x1="8.5" y1="4"   x2="12"  y2="8"   stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="12"  y1="4"   x2="8.5" y2="8"   stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function fmtTime(d) {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -39,7 +62,7 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           title="Cycle theme"
           style={{ background: 'transparent', border: 'none', font: 'inherit' }}
         >
-          🎨 {themeLabel}
+          {themeLabel}
         </button>
         <button
           className="item"
@@ -48,14 +71,14 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           title="Toggle sounds"
           style={{ background: 'transparent', border: 'none', font: 'inherit' }}
         >
-          {sound ? '🔊' : '🔇'}
+          {sound ? <SpeakerOnIcon /> : <SpeakerOffIcon />}
         </button>
         <button
           className="item"
           data-keep
           onClick={onMode}
           title="Toggle light/dark"
-          style={{ background: 'transparent', border: 'none', font: 'inherit' }}
+          style={{ background: 'transparent', border: 'none', font: 'inherit', fontSize: 14 }}
         >
           {mode === 'dark' ? '☾' : '☀'}
         </button>
