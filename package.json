@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
-  "description": "Zahadad Jarif's retro-OS portfolio — built with React + Vite, deployed on Cloudflare Workers.",
+  "description": "Zahadad Jarif's retro-OS portfolio — built with React + Vite, deployed on Cloudflare Pages.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -18,7 +18,7 @@
     "portfolio",
     "react",
     "vite",
-    "cloudflare-workers"
+    "cloudflare-pages"
   ],
   "author": "Zahadad Jarif <zahadad14@gmail.com>",
   "license": "MIT",

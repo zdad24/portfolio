@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Win } from './Window.jsx'
-import portraitUrl from './portrait.jpg'
+import portraitUrl from './portrait.webp'
 
 /* ============================================================
    Magnetic button — follows cursor within a radius

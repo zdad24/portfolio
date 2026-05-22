@@ -2,7 +2,6 @@ export async function onRequestPost({ request, env }) {
   const origin = request.headers.get('Origin') || '';
   const allowed = [
     'https://zahadadjarif.tech',
-    'https://portfolio.zahadad.workers.dev',
     'http://localhost:5173',
   ];
   const corsOrigin = allowed.includes(origin) ? origin : allowed[0];
