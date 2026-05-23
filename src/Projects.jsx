@@ -80,7 +80,7 @@ const PROJECTS = [
     blurb: 'Self-hosted RAG API over custom document collections. Hits sub-2s p95 latency on a local Ollama LLM. Multi-stage Docker build deployed to Kubernetes with one-command Docker Hub releases.',
     impact: 'Sub-2s p95 · self-hosted · K8s-native',
     tech: ['Python', 'FastAPI', 'Docker', 'Kubernetes', 'ChromaDB', 'Ollama'],
-    github: null,
+    github: 'https://github.com/zdad24',
     demo: null,
     comingSoon: true,
     art: 'rag',
