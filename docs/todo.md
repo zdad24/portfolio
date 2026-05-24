@@ -7,6 +7,7 @@
 - [ ] put music for other games
 - [ ] optimize for mobile and make games playable on mobile 
 - [ ] Make receipts a bit cooler kinda bland
-
+- [] fix coffee 
+- [ ] fix achievements in dark mode 
 ## Completed
 
