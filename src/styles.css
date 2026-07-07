@@ -291,7 +291,10 @@ a:hover { text-decoration: underline; }
   .about-grid,
   .edu-grid,
   .contact-grid {
-    grid-template-columns: 1fr;
+    /* minmax(0, 1fr), not bare 1fr — a plain 1fr track's minimum is
+       content-based ("auto"), so a wide-min-content child (e.g. the
+       terminal, an unbreakable URL) blows the column past the viewport. */
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
   /* the hero LEFT column has inline border-right — kill it on mobile, restore as bottom */
@@ -508,21 +511,24 @@ a:hover { text-decoration: underline; }
   .menu-bar .item { padding: 6px 6px; font-size: 11px; }
   .menu-bar .brand { font-size: 9px; }
   /* Dock — hover tooltips don't reach touch users, so swap in an
-     always-visible caption under each glyph instead of just hiding disambiguation. */
-  .dock { gap: 3px; padding: 4px 4px 5px; bottom: 8px; max-width: calc(100vw - 16px); overflow-x: auto; }
+     always-visible caption under each glyph instead of just hiding disambiguation.
+     Icons shrink to fit all 8 + divider in one row without horizontal scroll
+     down to ~340px viewports; overflow-x stays as a safety net below that. */
+  .dock { gap: 2px; padding: 4px 3px 5px; bottom: 8px; max-width: calc(100vw - 12px); overflow-x: auto; }
   .dock-icon {
-    width: 44px; height: 52px; font-size: 9px; flex-shrink: 0;
+    width: 36px; height: 46px; font-size: 8px; flex-shrink: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  } /* 44px width = min touch target; extra height fits the caption */
+  }
   .dock-icon::after { display: none; } /* tooltips can clip viewport; caption below replaces them */
   .dock-icon-caption {
     display: block;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 7px;
-    letter-spacing: 0.2px;
+    font-size: 6px;
+    letter-spacing: 0.1px;
     color: var(--ink-mid);
   }
   .dock-icon:hover .dock-icon-caption { color: inherit; }
+  .dock-divider { height: 24px; margin: 0 2px; }
 }
 
 /* ============================================================

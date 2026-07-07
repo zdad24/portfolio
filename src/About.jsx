@@ -633,7 +633,10 @@ function Terminal({ apiRef }) {
       {/* output */}
       <div
         ref={scrollRef}
-        style={{ flex: 1, padding: '14px 16px', overflowY: 'auto', fontSize: 13, lineHeight: 1.55 }}
+        style={{
+          flex: 1, padding: '14px 16px', overflowY: 'auto', overflowX: 'hidden',
+          fontSize: 13, lineHeight: 1.55, overflowWrap: 'anywhere',
+        }}
       >
         {history.map((h, i) => <Line key={i} item={h}/>)}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#f1ead8' }}>
