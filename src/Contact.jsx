@@ -9,9 +9,11 @@ const LINKS = [
   { k: 'RESUME', v: 'zahadad-jarif-resume.pdf', href: 'https://drive.google.com/file/d/1Jcn4e-SahYHEHOJXhfstQj9ebaMcdU7v/view', tag: 'pdf' },
 ];
 
+const MAX = { name: 100, from: 200, body: 2000 };
+
 function Contact() {
   const [copied, setCopied] = useState(null);
-  const [form, setForm] = useState({ name: '', from: '', body: '' });
+  const [form, setForm] = useState({ name: '', from: '', body: '', hp: '' });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
@@ -95,21 +97,29 @@ function Contact() {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
+            if (form.hp) return; // honeypot — bots fill hidden fields
+            const name = form.name.trim();
+            const from = form.from.trim();
+            const body = form.body.trim();
+            if (!name || !from || !body) {
+              setError('all fields are required');
+              return;
+            }
             setSending(true);
             setError(null);
             try {
               const res = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
+                body: JSON.stringify({ name, from, body }),
               });
-              const data = await res.json();
-              if (data.ok) {
+              const data = await res.json().catch(() => null);
+              if (data?.ok) {
                 setSent(true);
-                setForm({ name: '', from: '', body: '' });
+                setForm({ name: '', from: '', body: '', hp: '' });
                 setTimeout(() => setSent(false), 5000);
               } else {
-                setError(data.error || 'something went wrong');
+                setError(data?.error || 'something went wrong');
               }
             } catch {
               setError('network error — try emailing directly');
@@ -130,8 +140,20 @@ function Contact() {
             <span className="mono muted" style={{ fontSize: 10 }}>untitled.txt</span>
           </div>
 
-          <Field name="from" type="email" autoComplete="email" label="FROM" value={form.from} onChange={v => setForm({ ...form, from: v })} placeholder="you@company.com" required />
-          <Field name="name" autoComplete="name" label="NAME" value={form.name} onChange={v => setForm({ ...form, name: v })} placeholder="Jane Recruiter" required />
+          {/* Honeypot — hidden from sighted users and keyboard tab order, bots fill it anyway */}
+          <input
+            type="text"
+            name="company"
+            tabIndex={-1}
+            autoComplete="off"
+            value={form.hp}
+            onChange={e => setForm({ ...form, hp: e.target.value })}
+            style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            aria-hidden="true"
+          />
+
+          <Field name="from" type="email" autoComplete="email" label="FROM" value={form.from} onChange={v => setForm({ ...form, from: v })} placeholder="you@company.com" maxLength={MAX.from} required />
+          <Field name="name" autoComplete="name" label="NAME" value={form.name} onChange={v => setForm({ ...form, name: v })} placeholder="Jane Recruiter" maxLength={MAX.name} required />
           <Field
             name="body"
             label="BODY"
@@ -139,16 +161,17 @@ function Contact() {
             onChange={v => setForm({ ...form, body: v })}
             placeholder="we have an internship and you'd love it..."
             textarea
+            maxLength={MAX.body}
             required
           />
 
           <div className="row between center" style={{ marginTop: 4 }}>
-            <span className="mono muted" style={{ fontSize: 10 }}>
+            <span className="mono muted" style={{ fontSize: 10 }} role="status" aria-live="polite">
               {sent
                 ? '✓ sent — I\'ll reply soon :)'
                 : error
                   ? `✗ ${error}`
-                  : `${form.body.length} chars · auto-saved`}
+                  : `${form.body.length}/${MAX.body} chars · auto-saved`}
             </span>
             <Magnetic>
               <button type="submit" className="btn btn-primary" disabled={sending || sent}>
@@ -168,7 +191,7 @@ function Contact() {
   );
 }
 
-function Field({ name, label, value, onChange, placeholder, textarea, type = 'text', required, autoComplete }) {
+function Field({ name, label, value, onChange, placeholder, textarea, type = 'text', required, autoComplete, maxLength }) {
   const id = `contact-${name}`;
   const common = {
     background: 'var(--cream-2)',
@@ -194,6 +217,7 @@ function Field({ name, label, value, onChange, placeholder, textarea, type = 'te
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
+          maxLength={maxLength}
           rows={5}
           style={{ ...common, resize: 'vertical', minHeight: 96 }}
         />
@@ -205,6 +229,7 @@ function Field({ name, label, value, onChange, placeholder, textarea, type = 'te
           autoComplete={autoComplete}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          maxLength={maxLength}
           placeholder={placeholder}
           required={required}
           style={common}

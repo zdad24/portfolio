@@ -156,9 +156,18 @@ function AchievementToast({ achievement, index, onDone }) {
 /* ============================================================
    System — renders all active toasts + exposes global unlock fn
    ============================================================ */
+function loadUnlocked() {
+  try {
+    const raw = JSON.parse(localStorage.getItem('zj_ach') || '[]');
+    return new Set(Array.isArray(raw) ? raw.filter(id => typeof id === 'string') : []);
+  } catch {
+    return new Set();
+  }
+}
+
 function AchievementsSystem() {
   const [toasts, setToasts] = useState([]);
-  const unlocked = useRef(new Set(JSON.parse(localStorage.getItem('zj_ach') || '[]')));
+  const unlocked = useRef(loadUnlocked());
   const nextId = useRef(0);
 
   useEffect(() => {
@@ -173,7 +182,11 @@ function AchievementsSystem() {
       const a = ACHIEVEMENTS[id];
       if (!a) return;
       unlocked.current.add(id);
-      localStorage.setItem('zj_ach', JSON.stringify([...unlocked.current]));
+      try {
+        localStorage.setItem('zj_ach', JSON.stringify([...unlocked.current]));
+      } catch {
+        // storage full or unavailable (private browsing) — toast still fires this session
+      }
       const uid = nextId.current++;
       setToasts(ts => [...ts, { uid, achievement: a }]);
     };
