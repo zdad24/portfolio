@@ -529,6 +529,16 @@ a:hover { text-decoration: underline; }
   }
   .dock-icon:hover .dock-icon-caption { color: inherit; }
   .dock-divider { height: 24px; margin: 0 2px; }
+
+  /* iOS Safari auto-zooms any focused text input under 16px, then snaps
+     back — the "shifts right" jolt when tapping the terminal or contact
+     fields. Bumping to 16px on focus-capable text fields stops the zoom
+     without changing their rest-state look on desktop. !important is
+     needed here — the terminal/contact inputs set fontSize inline. */
+  input:not([type="range"]):not([type="color"]),
+  textarea {
+    font-size: 16px !important;
+  }
 }
 
 /* ============================================================
