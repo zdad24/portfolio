@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useFitCell } from './useFitCell.js'
+import { DPad, TouchButton } from './GameTouchControls.jsx'
 
 /* ============================================================
    Snake — easter-egg mini game inside a window modal.
@@ -33,6 +35,12 @@ function Snake({ onClose, onChirp }) {
     setPaused(false);
   }
 
+  function changeDir(nd) {
+    const cd = dirRef.current;
+    if (cd[0] + nd[0] === 0 && cd[1] + nd[1] === 0) return; // no 180
+    setDir(nd);
+  }
+
   useEffect(() => {
     function onKey(e) {
       if (e.key === 'Escape') { onClose(); return; }
@@ -46,9 +54,7 @@ function Snake({ onClose, onChirp }) {
       };
       const nd = map[e.key];
       if (!nd) return;
-      const cd = dirRef.current;
-      if (cd[0] + nd[0] === 0 && cd[1] + nd[1] === 0) return; // no 180
-      setDir(nd);
+      changeDir(nd);
       e.preventDefault();
     }
     window.addEventListener('keydown', onKey);
@@ -77,7 +83,7 @@ function Snake({ onClose, onChirp }) {
     return () => clearInterval(tick);
   }, [food, over, paused]);
 
-  const CELL = 22;
+  const [gridWrapRef, CELL] = useFitCell(COLS, 22, 12);
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -103,31 +109,33 @@ function Snake({ onClose, onChirp }) {
               ↑↓←→ move · SPACE pause · ESC close · R restart
             </span>
           </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`,
-              gridTemplateRows: `repeat(${ROWS}, ${CELL}px)`,
-              gap: 1,
-              background: 'var(--ink)',
-              border: '2px solid var(--line)',
-              padding: 1,
-              width: 'fit-content',
-              margin: '0 auto',
-            }}
-          >
-            {Array.from({ length: ROWS }).map((_, y) =>
-              Array.from({ length: COLS }).map((_, x) => {
-                const isHead = snake[0][0] === x && snake[0][1] === y;
-                const isBody = !isHead && snake.some(([sx, sy]) => sx === x && sy === y);
-                const isFood = food[0] === x && food[1] === y;
-                let bg = 'var(--cream-2)';
-                if (isHead) bg = 'var(--accent)';
-                else if (isBody) bg = 'var(--ink-soft)';
-                else if (isFood) bg = 'var(--accent-2)';
-                return <div key={`${x}-${y}`} style={{ background: bg }}/>;
-              })
-            )}
+          <div ref={gridWrapRef} style={{ width: '100%' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`,
+                gridTemplateRows: `repeat(${ROWS}, ${CELL}px)`,
+                gap: 1,
+                background: 'var(--ink)',
+                border: '2px solid var(--line)',
+                padding: 1,
+                width: 'fit-content',
+                margin: '0 auto',
+              }}
+            >
+              {Array.from({ length: ROWS }).map((_, y) =>
+                Array.from({ length: COLS }).map((_, x) => {
+                  const isHead = snake[0][0] === x && snake[0][1] === y;
+                  const isBody = !isHead && snake.some(([sx, sy]) => sx === x && sy === y);
+                  const isFood = food[0] === x && food[1] === y;
+                  let bg = 'var(--cream-2)';
+                  if (isHead) bg = 'var(--accent)';
+                  else if (isBody) bg = 'var(--ink-soft)';
+                  else if (isFood) bg = 'var(--accent-2)';
+                  return <div key={`${x}-${y}`} style={{ background: bg }}/>;
+                })
+              )}
+            </div>
           </div>
           {(over || paused) && (
             <div style={{ textAlign: 'center', marginTop: 14 }}>
@@ -139,6 +147,23 @@ function Snake({ onClose, onChirp }) {
               </div>
             </div>
           )}
+          <div className="game-touch-controls">
+            <DPad
+              onUp={() => changeDir([0, -1])}
+              onDown={() => changeDir([0, 1])}
+              onLeft={() => changeDir([-1, 0])}
+              onRight={() => changeDir([1, 0])}
+            />
+            <div className="game-action-row">
+              <TouchButton
+                ariaLabel={over ? 'Restart' : paused ? 'Resume' : 'Pause'}
+                onDown={() => (over ? restart() : setPaused(p => !p))}
+                style={{ width: 'auto', padding: '0 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: 0.5 }}
+              >
+                {over ? 'RESTART' : paused ? 'RESUME' : 'PAUSE'}
+              </TouchButton>
+            </div>
+          </div>
         </div>
         <footer className="window-statusbar mono">
           <span>{/* hidden as a thank-you for typing the code */}</span>

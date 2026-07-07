@@ -25,7 +25,7 @@ function Education() {
             position: 'relative',
           }}
         >
-          <div className="label" style={{ color: 'var(--accent)' }}>▸ DEGREE</div>
+          <div className="label" style={{ color: 'var(--accent-ink)' }}>▸ DEGREE</div>
           <h3 className="pixel-sm" style={{ margin: '8px 0 4px', fontSize: 24 }}>
             York University
           </h3>
@@ -56,7 +56,7 @@ function Education() {
             padding: 20,
           }}
         >
-          <div className="label" style={{ color: 'var(--accent)' }}>▸ CERTIFICATIONS</div>
+          <div className="label" style={{ color: 'var(--accent-ink)' }}>▸ CERTIFICATIONS</div>
           <h3 className="pixel-sm" style={{ margin: '8px 0 14px', fontSize: 24 }}>
             Stamped & shipped.
           </h3>

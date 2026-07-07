@@ -146,15 +146,15 @@ function App() {
 
   /* ───────── dock items ───────── */
   const dockItems = [
-    { id: 'home',        icon: <span style={{ fontSize: 22, position: 'relative', top: '-5px', lineHeight: 1 }}>⌂</span>, tip: 'home', target: '__home' },
-    { id: 'about',       icon: 'ME',   tip: 'about.md',         target: 'about' },
-    { id: 'projects',    icon: '⌘P',   tip: 'projects/',        target: 'projects' },
-    { id: 'experience',  icon: 'EX',   tip: 'experience.log',   target: 'experience' },
-    { id: 'skills',      icon: t.theme === 'pokemon' ? 'DEX' : 'ROS', tip: 'skills', target: 'skills' },
-    { id: 'education',   icon: 'EDU',  tip: 'education.txt',    target: 'education' },
-    { id: 'contact',     icon: '@',    tip: 'contact.app',      target: 'contact' },
+    { id: 'home',        icon: <span style={{ fontSize: 22, position: 'relative', top: '-5px', lineHeight: 1 }}>⌂</span>, tip: 'home', shortLabel: 'home', target: '__home' },
+    { id: 'about',       icon: 'ME',   tip: 'about.md',         shortLabel: 'about',   target: 'about' },
+    { id: 'projects',    icon: '⌘P',   tip: 'projects/',        shortLabel: 'work',    target: 'projects' },
+    { id: 'experience',  icon: 'EX',   tip: 'experience.log',   shortLabel: 'exp',     target: 'experience' },
+    { id: 'skills',      icon: t.theme === 'pokemon' ? 'DEX' : 'ROS', tip: 'skills', shortLabel: 'skills', target: 'skills' },
+    { id: 'education',   icon: 'EDU',  tip: 'education.txt',    shortLabel: 'edu',     target: 'education' },
+    { id: 'contact',     icon: '@',    tip: 'contact.app',      shortLabel: 'contact', target: 'contact' },
     { divider: true },
-    { id: 'games',       icon: <ControllerIcon />, tip: 'games/', target: '__games' },
+    { id: 'games',       icon: <ControllerIcon />, tip: 'games/', shortLabel: 'games', target: '__games' },
   ];
 
   function onLaunch(target) {

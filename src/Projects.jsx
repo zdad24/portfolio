@@ -6,7 +6,6 @@ import { Win, WinHeading } from './Window.jsx'
    ============================================================ */
 function TiltCard({ children, max = 8, className = '', style = {} }) {
   const ref = useRef(null);
-  const sheenRef = useRef(null);
   const rafRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
 
@@ -21,16 +20,12 @@ function TiltCard({ children, max = 8, className = '', style = {} }) {
       const x = (ex - r.left) / r.width - 0.5;
       const y = (ey - r.top) / r.height - 0.5;
       el.style.transform = `perspective(900px) rotateY(${x * max}deg) rotateX(${-y * max}deg) translateY(-3px)`;
-      if (sheenRef.current) {
-        sheenRef.current.style.background = `radial-gradient(400px circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.18), transparent 50%)`;
-      }
     });
   }
   function onLeave() {
     if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
     const el = ref.current; if (!el) return;
     el.style.transform = '';
-    if (sheenRef.current) sheenRef.current.style.background = '';
   }
 
   return (
@@ -42,11 +37,6 @@ function TiltCard({ children, max = 8, className = '', style = {} }) {
       style={style}
     >
       {children}
-      <div
-        ref={sheenRef}
-        className="sheen"
-        style={{ position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'overlay' }}
-      />
     </div>
   );
 }
@@ -246,7 +236,7 @@ function Projects() {
               }}
             >
               <span style={{ display: 'flex', gap: 4 }}>
-                <span style={dot('#ff5f57')}/><span style={dot('#febc2e')}/><span style={dot('#28c840')}/>
+                <span style={dot('var(--win-red)')}/><span style={dot('var(--win-amber)')}/><span style={dot('var(--win-green)')}/>
               </span>
               <span className="muted" style={{ flex: 1, textAlign: 'center' }}>{p.file}</span>
               <span className="muted">#{String(i + 1).padStart(2, '0')}</span>
@@ -261,7 +251,7 @@ function Projects() {
                 <h3 className="pixel-sm" style={{ margin: 0, lineHeight: 1, letterSpacing: 0.5 }}>
                   {p.name}
                 </h3>
-                <span className="label" style={{ color: 'var(--accent)' }}>OPEN</span>
+                <span className="label" style={{ color: 'var(--accent-ink)' }}>OPEN</span>
               </div>
               <p className="mono" style={{ margin: '0 0 12px', fontSize: 12.5, lineHeight: 1.5, color: 'var(--ink-soft)' }}>
                 {p.blurb}
@@ -274,13 +264,13 @@ function Projects() {
               </div>
               <div className="row gap-3">
                 {p.github ? (
-                  <a className="btn" href={p.github}>
+                  <a className="btn" href={p.github} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} source on GitHub`}>
                     <span style={{ fontFamily: "'JetBrains Mono'" }}>{'</>'}</span> source
                   </a>
                 ) : null}
                 {p.comingSoon ? (
-                  <span className="btn" style={{ opacity: 0.45, cursor: 'default', pointerEvents: 'none' }}>
-                    ⌛ coming soon
+                  <span className="btn" style={{ opacity: 0.55, cursor: 'default', pointerEvents: 'none' }}>
+                    ⌛ demo soon
                   </span>
                 ) : (
                   <a className="btn btn-primary" href={p.demo} target="_blank" rel="noopener noreferrer">

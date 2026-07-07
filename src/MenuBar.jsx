@@ -47,12 +47,12 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
 
   return (
     <nav className="menu-bar">
-      <div className="brand"><span className="glyph"></span> zahadadOS</div>
-      <div className="item">File</div>
-      <div className="item">Edit</div>
-      <div className="item">View</div>
-      <div className="item">Window</div>
-      <div className="item">Help</div>
+      <div className="brand"><span className="glyph" aria-hidden="true"></span> zahadadOS</div>
+      <div className="item" aria-hidden="true">File</div>
+      <div className="item" aria-hidden="true">Edit</div>
+      <div className="item" aria-hidden="true">View</div>
+      <div className="item" aria-hidden="true">Window</div>
+      <div className="item" aria-hidden="true">Help</div>
       <div className="spacer"></div>
       <div className="right">
         <button
@@ -60,6 +60,7 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           data-keep
           onClick={onTheme}
           title="Cycle theme"
+          aria-label={`Cycle theme (current: ${themeLabel})`}
           style={{ background: 'transparent', border: 'none', font: 'inherit' }}
         >
           {themeLabel}
@@ -69,6 +70,8 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           data-keep
           onClick={onSound}
           title="Toggle sounds"
+          aria-label={sound ? 'Sound on — turn off' : 'Sound off — turn on'}
+          aria-pressed={sound}
           style={{ background: 'transparent', border: 'none', font: 'inherit' }}
         >
           {sound ? <SpeakerOnIcon /> : <SpeakerOffIcon />}
@@ -78,6 +81,8 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           data-keep
           onClick={onMode}
           title="Toggle light/dark"
+          aria-label={mode === 'dark' ? 'Dark mode — switch to light' : 'Light mode — switch to dark'}
+          aria-pressed={mode === 'dark'}
           style={{ background: 'transparent', border: 'none', font: 'inherit', fontSize: 14 }}
         >
           {mode === 'dark' ? '☾' : '☀'}

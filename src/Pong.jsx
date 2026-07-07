@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { TouchButton } from './GameTouchControls.jsx'
 
 /* ============================================================
    Pong — canvas-based 1P vs AI.
@@ -158,21 +159,21 @@ function Pong({ onClose }) {
   }, []);
 
   /* ── keyboard ──────────────────────────────── */
+  function toggleStart() {
+    if (!started) {
+      pausedRef.current = false;
+      setStarted(true);
+      setPaused(false);
+    } else {
+      pausedRef.current = !pausedRef.current;
+      setPaused(p => !p);
+    }
+  }
+
   useEffect(() => {
     function onDown(e) {
       if (e.key === 'Escape') { onClose(); return; }
-      if (e.key === ' ') {
-        if (!started) {
-          pausedRef.current = false;
-          setStarted(true);
-          setPaused(false);
-        } else {
-          pausedRef.current = !pausedRef.current;
-          setPaused(p => !p);
-        }
-        e.preventDefault();
-        return;
-      }
+      if (e.key === ' ') { toggleStart(); e.preventDefault(); return; }
       keysRef.current[e.key] = true;
       e.preventDefault();
     }
@@ -215,6 +216,7 @@ function Pong({ onClose }) {
             ref={canvasRef}
             width={W}
             height={H}
+            onClick={toggleStart}
             style={{
               display: 'block',
               margin: '0 auto',
@@ -222,20 +224,37 @@ function Pong({ onClose }) {
               maxWidth: W,
               imageRendering: 'pixelated',
               border: '2px solid var(--line)',
+              cursor: 'none',
             }}
           />
 
           {!started && (
             <div style={{ textAlign: 'center', marginTop: 12 }}>
-              <span className="mono muted" style={{ fontSize: 11 }}>press SPACE to serve</span>
+              <span className="mono muted" style={{ fontSize: 11 }}>press SPACE or tap the board to serve</span>
             </div>
           )}
           {started && paused && (
             <div style={{ textAlign: 'center', marginTop: 12 }}>
               <div className="pixel-sm" style={{ fontSize: 18, color: 'var(--accent)' }}>PAUSED</div>
-              <div className="mono muted" style={{ fontSize: 11, marginTop: 4 }}>SPACE to resume</div>
+              <div className="mono muted" style={{ fontSize: 11, marginTop: 4 }}>SPACE or tap the board to resume</div>
             </div>
           )}
+
+          <div className="game-touch-controls">
+            <div className="game-action-row">
+              <TouchButton
+                ariaLabel="Move paddle up"
+                onDown={() => { keysRef.current['ArrowUp'] = true; }}
+                onUp={() => { delete keysRef.current['ArrowUp']; }}
+              >▲</TouchButton>
+              <TouchButton
+                ariaLabel="Move paddle down"
+                onDown={() => { keysRef.current['ArrowDown'] = true; }}
+                onUp={() => { delete keysRef.current['ArrowDown']; }}
+              >▼</TouchButton>
+            </div>
+            <span className="mono muted" style={{ fontSize: 10 }}>tap board to serve/pause · ▲▼ move paddle</span>
+          </div>
         </div>
 
         <footer className="window-statusbar mono">

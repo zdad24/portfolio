@@ -640,10 +640,13 @@ function Terminal({ apiRef }) {
           <Prompt/>
           <input
             ref={inputRef}
+            id="about-terminal-input"
+            name="terminal-command"
+            aria-label="Terminal command input"
+            autoComplete="off"
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={onKey}
-            autoFocus
             spellCheck={false}
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
@@ -776,10 +779,10 @@ function About() {
             padding: 18, boxShadow: '4px 4px 0 0 var(--line)',
           }}
         >
-          <div className="label" style={{ color: 'var(--accent)' }}>▸ SYSTEM_INFO</div>
+          <div className="label" style={{ color: 'var(--accent-ink)' }}>▸ SYSTEM_INFO</div>
           <Row k="UPTIME"    v={<UptimeTicker/>}/>
           <Row k="LOCATION"  v="Toronto, ON"/>
-          <Row k="STATUS"    v={<span><span style={{color:'var(--accent)'}}>●</span> available · fall 2026</span>}/>
+          <Row k="STATUS"    v={<span><span style={{color:'var(--accent-ink)'}}>●</span> available · fall 2026</span>}/>
           <Row k="BUILDING"  v="ReRoute · multimodal transit"/>
           <Row k="LEARNING"  v="Distributed systems · Rust"/>
           <Row k="LISTENING" v={<NowPlaying/>}/>
@@ -797,13 +800,8 @@ function About() {
             {['help','whoami','git log','man zahadad','hack','coffee','matrix'].map(c => (
               <button
                 key={c}
+                className="btn-sm"
                 onClick={() => termApi.current?.run(c)}
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11, padding: '3px 8px',
-                  background: 'var(--paper)', border: '1.5px solid var(--line)',
-                  cursor: 'none', borderRadius: 2,
-                }}
               >
                 {c}
               </button>

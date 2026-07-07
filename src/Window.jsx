@@ -44,7 +44,7 @@ function Win({
 function WinHeading({ tag, title, sub }) {
   return (
     <header className="col gap-2" style={{ marginBottom: 24 }}>
-      <div className="label" style={{ color: 'var(--accent)' }}>{tag}</div>
+      <div className="label" style={{ color: 'var(--accent-ink)' }}>{tag}</div>
       <h2 className="pixel-md" style={{ margin: 0 }}>{title}</h2>
       {sub && <p className="muted" style={{ margin: 0, maxWidth: 640 }}>{sub}</p>}
     </header>

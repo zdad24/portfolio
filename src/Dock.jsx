@@ -1,10 +1,37 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 /* ============================================================
    Dock — bottom app dock with magnetic hover scaling
    ============================================================ */
 function Dock({ items, onLaunch }) {
   const dockRef = useRef(null);
+  const [hidden, setHidden] = useState(false);
+
+  // Auto-hide while scrolling down so the fixed dock never sits on top of a
+  // CTA the user is about to click; reappears on scroll-up or near page edges.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let raf = null;
+    function onScroll() {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        const y = window.scrollY;
+        const doc = document.documentElement;
+        const nearTop = y < 80;
+        const nearBottom = y + window.innerHeight > doc.scrollHeight - 140;
+        const delta = y - lastY;
+        if (nearTop || nearBottom) setHidden(false);
+        else if (Math.abs(delta) > 2) setHidden(delta > 0);
+        if (Math.abs(delta) > 2) lastY = y;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   // Magnetic scale: icons near cursor grow more
   useEffect(() => {
@@ -48,7 +75,7 @@ function Dock({ items, onLaunch }) {
   }, []);
 
   return (
-    <div className="dock" ref={dockRef}>
+    <div className={`dock${hidden ? ' dock-hidden' : ''}`} ref={dockRef}>
       {items.map((it, i) => (
         it.divider ? (
           <span key={i} className="dock-divider"></span>
@@ -57,10 +84,12 @@ function Dock({ items, onLaunch }) {
             key={it.id}
             className="dock-icon"
             data-tip={it.tip}
+            aria-label={it.tip}
             style={it.style || {}}
             onClick={() => onLaunch(it.target)}
           >
-            {it.icon}
+            <span className="dock-icon-glyph">{it.icon}</span>
+            <span className="dock-icon-caption" aria-hidden="true">{it.shortLabel}</span>
           </button>
         )
       ))}

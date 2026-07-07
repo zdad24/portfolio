@@ -12,11 +12,11 @@ const LANGS = [
     ball: { pos: 'SG',  jersey: 23, line: 'Sharpshooter · runs the web' }, neutral: 'Frontend + Node services' },
   { name: 'TypeScript', short: 'TS',  hp: 90, poke: { type: 'METAL',    hue: 'var(--poke-blue)', moves: ['Strict.Mode', 'Infer.Beam']    },
     ball: { pos: 'SF',  jersey: 33, line: 'Two-way · types + speed' }, neutral: 'Default for anything production' },
-  { name: 'Java',       short: 'JV',  hp: 78, poke: { type: 'BREW',     hue: '#b67a35', moves: ['NullPointerException', 'GC.Cycle']    },
+  { name: 'Java',       short: 'JV',  hp: 78, poke: { type: 'BREW',     hue: 'var(--poke-type-brew)', moves: ['NullPointerException', 'GC.Cycle']    },
     ball: { pos: 'PF',  jersey: 32, line: 'Workhorse · OOP backbone' }, neutral: 'OOP foundation, coursework, Android' },
-  { name: 'C / C++',    short: 'C',   hp: 72, poke: { type: 'SYSTEMS',  hue: '#a0414a', moves: ['Manual.Memory', 'Pointer.Strike']  },
+  { name: 'C / C++',    short: 'C',   hp: 72, poke: { type: 'SYSTEMS',  hue: 'var(--poke-type-systems)', moves: ['Manual.Memory', 'Pointer.Strike']  },
     ball: { pos: 'C',   jersey: 50, line: 'Big man · raw performance' }, neutral: 'Systems courses, perf-critical paths' },
-  { name: 'SQL',        short: 'SQL', hp: 82, poke: { type: 'DATA',     hue: '#2f7a6a', moves: ['Inner.Join', 'CTE.Bind']           },
+  { name: 'SQL',        short: 'SQL', hp: 82, poke: { type: 'DATA',     hue: 'var(--poke-type-data)', moves: ['Inner.Join', 'CTE.Bind']           },
     ball: { pos: '6th', jersey: 6, line: 'Sixth man · clutch every game' }, neutral: 'Postgres / MySQL / pgvector' },
 ];
 
@@ -280,7 +280,7 @@ function ChipGrid({ items, title, sub }) {
     <div className="col gap-3" style={{ marginTop: 28 }}>
       <div className="row between center">
         <div>
-          <div className="label" style={{ color: 'var(--accent)' }}>▸ {title}</div>
+          <div className="label" style={{ color: 'var(--accent-ink)' }}>▸ {title}</div>
           {sub && <div className="mono muted" style={{ fontSize: 11, marginTop: 4 }}>{sub}</div>}
         </div>
         <span className="mono muted" style={{ fontSize: 11 }}>{items.length} items</span>

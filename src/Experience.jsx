@@ -123,7 +123,7 @@ function Experience() {
               }}
             >
               <div style={{ minWidth: 0 }}>
-                <div className="label" style={{ color: 'var(--accent)', marginBottom: 6 }}>
+                <div className="label" style={{ color: 'var(--accent-ink)', marginBottom: 6 }}>
                   ▸ {e.tag}
                 </div>
                 <h3
@@ -160,7 +160,7 @@ function Experience() {
                       position: 'absolute',
                       left: 0,
                       top: 4,
-                      color: 'var(--accent)',
+                      color: 'var(--accent-ink)',
                       fontFamily: "'Press Start 2P', monospace",
                       fontSize: 8,
                     }}

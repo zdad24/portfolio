@@ -3,43 +3,58 @@ import { Win } from './Window.jsx'
 import portraitUrl from './portrait.webp'
 
 /* ============================================================
-   Magnetic button — follows cursor within a radius
+   Magnetic button — follows cursor within a radius.
+   All instances share ONE window mousemove listener + rAF loop
+   (registry below) instead of attaching one listener each.
    ============================================================ */
+const _magnets = new Set();
+let _magRaf = null;
+let _magX = 0, _magY = 0;
+
+function _magTick() {
+  _magRaf = null;
+  for (const m of _magnets) {
+    const r = m.el.getBoundingClientRect();
+    const dx = _magX - (r.left + r.width / 2);
+    const dy = _magY - (r.top + r.height / 2);
+    if (Math.hypot(dx, dy) < 120) {
+      m.el.style.transform = `translate(${dx * m.strength}px, ${dy * m.strength}px)`;
+    } else if (m.el.style.transform) {
+      m.el.style.transform = '';
+    }
+  }
+}
+
+function _magMove(e) {
+  _magX = e.clientX;
+  _magY = e.clientY;
+  if (_magRaf == null) _magRaf = requestAnimationFrame(_magTick);
+}
+
+function _magRegister(m) {
+  if (_magnets.size === 0) window.addEventListener('mousemove', _magMove);
+  _magnets.add(m);
+}
+
+function _magUnregister(m) {
+  _magnets.delete(m);
+  m.el.style.transform = '';
+  if (_magnets.size === 0) {
+    window.removeEventListener('mousemove', _magMove);
+    if (_magRaf != null) { cancelAnimationFrame(_magRaf); _magRaf = null; }
+  }
+}
+
 function Magnetic({ children, strength = 0.35, className = '', ...rest }) {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    let raf = null;
-    let lastX = 0, lastY = 0;
-    function onMove(e) {
-      lastX = e.clientX;
-      lastY = e.clientY;
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = null;
-        const r = el.getBoundingClientRect();
-        const dx = lastX - (r.left + r.width / 2);
-        const dy = lastY - (r.top + r.height / 2);
-        const dist = Math.hypot(dx, dy);
-        if (dist < 120) {
-          el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
-        } else {
-          el.style.transform = '';
-        }
-      });
-    }
-    function reset() {
-      if (raf) { cancelAnimationFrame(raf); raf = null; }
-      el.style.transform = '';
-    }
-    window.addEventListener('mousemove', onMove);
-    el.addEventListener('mouseleave', reset);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      el.removeEventListener('mouseleave', reset);
-      if (raf) cancelAnimationFrame(raf);
-    };
+    // Magnetic pull is meaningless without a fine pointer; skip on touch.
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    const m = { el, strength };
+    _magRegister(m);
+    return () => _magUnregister(m);
   }, [strength]);
   return (
     <span ref={ref} className={className} style={{ display: 'inline-block', transition: 'transform 0.18s ease' }} {...rest}>
@@ -259,7 +274,7 @@ function Hero({ theme, onScrollTo }) {
               transition: 'opacity 0.8s ease, transform 0.8s ease',
             }}
           >
-            <div className="label" style={{ color: 'var(--accent)', marginBottom: 10 }}>
+            <div className="label" style={{ color: 'var(--accent-ink)', marginBottom: 10 }}>
               ▸ HELLO_WORLD
             </div>
             <h1
@@ -272,8 +287,8 @@ function Hero({ theme, onScrollTo }) {
               <span style={{ color: 'var(--accent)' }}>.</span>
             </h1>
             <p className="mono" style={{ margin: '18px 0 22px', maxWidth: 460 }}>
-              SWE Intern <span style={{ color: 'var(--accent)' }}>@ 4D</span> · Computer Science{' '}
-              <span style={{ color: 'var(--accent)' }}>@ York University</span>. I prototype
+              SWE Intern <span style={{ color: 'var(--accent-ink)' }}>@ 4D</span> · Computer Science{' '}
+              <span style={{ color: 'var(--accent-ink)' }}>@ York University</span>. I prototype
               AI tools, ship dev infra, and build things that wouldn&apos;t exist otherwise.
             </p>
             <div className="row gap-3 wrap">
@@ -293,10 +308,10 @@ function Hero({ theme, onScrollTo }) {
                 </a>
               </Magnetic>
             </div>
-            <div className="row gap-4 wrap" style={{ marginTop: 24, opacity: 0.7 }}>
-              <span className="label">▸ STATUS</span>
-              <span className="mono" style={{ fontSize: 12 }}>
-                <span style={{ color: 'var(--accent)' }}>●</span> open to fall 2026 internships
+            <div className="row gap-4 wrap" style={{ marginTop: 24 }}>
+              <span className="label muted">▸ STATUS</span>
+              <span className="mono muted" style={{ fontSize: 12 }}>
+                <span style={{ color: 'var(--accent-ink)' }}>●</span> open to fall 2026 internships
               </span>
             </div>
           </div>
@@ -332,6 +347,8 @@ function Hero({ theme, onScrollTo }) {
               <img
                 src={portraitUrl}
                 alt="Zahadad Jarif — pixel portrait"
+                width={1254}
+                height={1254}
                 onClick={handlePortraitClick}
                 style={{
                   width: '100%', height: 'auto', display: 'block',

@@ -38,7 +38,7 @@ function Contact() {
       <div className="contact-grid">
         {/* Left — link list */}
         <div className="col gap-3">
-          <div className="label" style={{ color: 'var(--accent)' }}>▸ DIRECT_LINES</div>
+          <div className="label" style={{ color: 'var(--accent-ink)' }}>▸ DIRECT_LINES</div>
           {LINKS.map(l => (
             <a
               key={l.k}
@@ -121,18 +121,20 @@ function Contact() {
           }}
         >
           <div className="row between center">
-            <span className="label" style={{ color: 'var(--accent)' }}>▸ NEW_MESSAGE</span>
+            <span className="label" style={{ color: 'var(--accent-ink)' }}>▸ NEW_MESSAGE</span>
             <span className="mono muted" style={{ fontSize: 10 }}>untitled.txt</span>
           </div>
 
-          <Field label="FROM" value={form.from} onChange={v => setForm({ ...form, from: v })} placeholder="you@company.com" />
-          <Field label="NAME" value={form.name} onChange={v => setForm({ ...form, name: v })} placeholder="Jane Recruiter" />
+          <Field name="from" type="email" autoComplete="email" label="FROM" value={form.from} onChange={v => setForm({ ...form, from: v })} placeholder="you@company.com" required />
+          <Field name="name" autoComplete="name" label="NAME" value={form.name} onChange={v => setForm({ ...form, name: v })} placeholder="Jane Recruiter" required />
           <Field
+            name="body"
             label="BODY"
             value={form.body}
             onChange={v => setForm({ ...form, body: v })}
             placeholder="we have an internship and you'd love it..."
             textarea
+            required
           />
 
           <div className="row between center" style={{ marginTop: 4 }}>
@@ -161,7 +163,8 @@ function Contact() {
   );
 }
 
-function Field({ label, value, onChange, placeholder, textarea }) {
+function Field({ name, label, value, onChange, placeholder, textarea, type = 'text', required, autoComplete }) {
+  const id = `contact-${name}`;
   const common = {
     background: 'var(--cream-2)',
     border: '2px solid var(--line)',
@@ -175,22 +178,30 @@ function Field({ label, value, onChange, placeholder, textarea }) {
     cursor: 'none',
   };
   return (
-    <label className="col gap-2">
+    <label className="col gap-2" htmlFor={id}>
       <span className="label" style={{ fontSize: 8, color: 'var(--ink-mid)' }}>{label}</span>
       {textarea ? (
         <textarea
+          id={id}
+          name={name}
+          autoComplete={autoComplete}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          required={required}
           rows={5}
           style={{ ...common, resize: 'vertical', minHeight: 96 }}
         />
       ) : (
         <input
-          type="text"
+          id={id}
+          name={name}
+          type={type}
+          autoComplete={autoComplete}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          required={required}
           style={common}
         />
       )}

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useFitCell } from './useFitCell.js'
+import { DPad, TouchButton } from './GameTouchControls.jsx'
 
 /* ============================================================
    Tetris — classic 10×20 grid stacker.
@@ -6,7 +8,7 @@ import React, { useEffect, useRef, useState } from 'react'
    ↓ soft drop · C hard drop · P / SPACE pause
    ============================================================ */
 
-const COLS = 10, ROWS = 20, CELL = 22;
+const COLS = 10, ROWS = 20, CELL_MAX = 22;
 
 const PIECES = [
   { shape: [[1,1,1,1]],               color: '#38c8c8' }, // I
@@ -113,6 +115,7 @@ function Tetris({ onClose }) {
   const [paused, setPaused] = useState(false);
   const pausedRef           = useRef(false);
   const tickRef             = useRef(null);
+  const [boardWrapRef, CELL] = useFitCell(COLS, CELL_MAX, 12);
 
   /* always-fresh tick fn — updated via effect so the interval always gets latest state */
   useEffect(() => {
@@ -133,58 +136,75 @@ function Tetris({ onClose }) {
     return () => clearInterval(id);
   }, [gs.level, gs.over]);
 
+  /* movement — shared by keyboard and touch controls */
+  function moveLeft() {
+    setGs(g => {
+      if (g.over || pausedRef.current) return g;
+      const p = g.piece, b = g.board;
+      return fits(b, p, -1, 0) ? { ...g, piece: { ...p, x: p.x - 1 } } : g;
+    });
+  }
+  function moveRight() {
+    setGs(g => {
+      if (g.over || pausedRef.current) return g;
+      const p = g.piece, b = g.board;
+      return fits(b, p, 1, 0) ? { ...g, piece: { ...p, x: p.x + 1 } } : g;
+    });
+  }
+  function softDrop() {
+    setGs(g => {
+      if (g.over || pausedRef.current) return g;
+      const p = g.piece, b = g.board;
+      if (fits(b, p, 0, 1)) return { ...g, piece: { ...p, y: p.y + 1 } };
+      return lockPiece(g);
+    });
+  }
+  function rotate(cw = true) {
+    setGs(g => {
+      if (g.over || pausedRef.current) return g;
+      const p = g.piece, b = g.board;
+      const sh = cw ? rotateCW(p.shape) : rotateCCW(p.shape);
+      return fits(b, p, 0, 0, sh) ? { ...g, piece: { ...p, shape: sh } } : g;
+    });
+  }
+  function hardDrop() {
+    setGs(g => {
+      if (g.over || pausedRef.current) return g;
+      const p = g.piece, b = g.board;
+      let dy = 0;
+      while (fits(b, p, 0, dy + 1)) dy++;
+      return lockPiece({ ...g, piece: { ...p, y: p.y + dy } });
+    });
+  }
+  function togglePause() {
+    setGs(g => (g.over ? initGame() : g)); // restart on game-over
+    setGs(g => {
+      if (!g.over) {
+        pausedRef.current = !pausedRef.current;
+        setPaused(pausedRef.current);
+      }
+      return g;
+    });
+  }
+
   /* keyboard */
   useEffect(() => {
     function onKey(e) {
       if (e.key === 'Escape') { onClose(); return; }
 
-      /* pause / restart */
-      if (e.key === ' ' || e.key === 'p' || e.key === 'P') {
-        setGs(g => {
-          if (g.over) return initGame();       // restart on game-over
-          return g;
-        });
-        setGs(g => {
-          if (!g.over) {
-            pausedRef.current = !pausedRef.current;
-            setPaused(pausedRef.current);
-          }
-          return g;
-        });
-        e.preventDefault();
-        return;
-      }
+      if (e.key === ' ' || e.key === 'p' || e.key === 'P') { togglePause(); e.preventDefault(); return; }
 
       if (pausedRef.current) return;
 
-      setGs(g => {
-        if (g.over) return g;
-        const p = g.piece, b = g.board;
-        switch (e.key) {
-          case 'ArrowLeft':
-            return fits(b, p, -1, 0) ? { ...g, piece: { ...p, x: p.x - 1 } } : g;
-          case 'ArrowRight':
-            return fits(b, p,  1, 0) ? { ...g, piece: { ...p, x: p.x + 1 } } : g;
-          case 'ArrowDown':
-            if (fits(b, p, 0, 1)) return { ...g, piece: { ...p, y: p.y + 1 } };
-            return lockPiece(g);
-          case 'ArrowUp': case 'x': case 'X': {
-            const sh = rotateCW(p.shape);
-            return fits(b, p, 0, 0, sh) ? { ...g, piece: { ...p, shape: sh } } : g;
-          }
-          case 'z': case 'Z': {
-            const sh = rotateCCW(p.shape);
-            return fits(b, p, 0, 0, sh) ? { ...g, piece: { ...p, shape: sh } } : g;
-          }
-          case 'c': case 'C': {
-            /* hard drop */
-            let dy = 0;
-            while (fits(b, p, 0, dy + 1)) dy++;
-            return lockPiece({ ...g, piece: { ...p, y: p.y + dy } });
-          }
-          default: return g;
-        }
-      });
+      switch (e.key) {
+        case 'ArrowLeft':  moveLeft(); break;
+        case 'ArrowRight': moveRight(); break;
+        case 'ArrowDown':  softDrop(); break;
+        case 'ArrowUp': case 'x': case 'X': rotate(true); break;
+        case 'z': case 'Z': rotate(false); break;
+        case 'c': case 'C': hardDrop(); break;
+        default: return;
+      }
       e.preventDefault();
     }
     window.addEventListener('keydown', onKey);
@@ -236,33 +256,36 @@ function Tetris({ onClose }) {
         </header>
 
         <div className="window-body" style={{ padding: 16, display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-          {/* board */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`,
-              gridTemplateRows:    `repeat(${ROWS}, ${CELL}px)`,
-              gap: 1,
-              background: 'var(--ink)',
-              border: '2px solid var(--line)',
-              padding: 1,
-              flexShrink: 0,
-            }}
-          >
-            {display.map((row, y) =>
-              row.map((cell, x) => (
-                <div
-                  key={`${x}-${y}`}
-                  style={{
-                    background: cell === 'ghost'
-                      ? 'rgba(255,255,255,0.09)'
-                      : (cell || 'var(--cream-2)'),
-                    outline: cell && cell !== 'ghost'
-                      ? '1px solid rgba(255,255,255,0.18)' : 'none',
-                  }}
-                />
-              ))
-            )}
+          {/* board — flex-basis 0 so its measured width reflects space left
+              after the sidebar, independent of the grid's own pixel size */}
+          <div ref={boardWrapRef} style={{ flex: '1 1 0', minWidth: 0 }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`,
+                gridTemplateRows:    `repeat(${ROWS}, ${CELL}px)`,
+                gap: 1,
+                background: 'var(--ink)',
+                border: '2px solid var(--line)',
+                padding: 1,
+                width: 'fit-content',
+              }}
+            >
+              {display.map((row, y) =>
+                row.map((cell, x) => (
+                  <div
+                    key={`${x}-${y}`}
+                    style={{
+                      background: cell === 'ghost'
+                        ? 'rgba(255,255,255,0.09)'
+                        : (cell || 'var(--cream-2)'),
+                      outline: cell && cell !== 'ghost'
+                        ? '1px solid rgba(255,255,255,0.18)' : 'none',
+                    }}
+                  />
+                ))
+              )}
+            </div>
           </div>
 
           {/* sidebar */}
@@ -309,14 +332,32 @@ function Tetris({ onClose }) {
           </div>
         </div>
 
-        {/* overlay for pause / game-over */}
+        <div className="game-touch-controls" style={{ padding: '0 16px 16px' }}>
+          <DPad
+            onUp={() => rotate(true)}
+            onDown={() => softDrop()}
+            onLeft={() => moveLeft()}
+            onRight={() => moveRight()}
+          />
+          <div className="game-action-row">
+            <TouchButton ariaLabel="Hard drop" onDown={hardDrop} style={{ width: 'auto', padding: '0 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: 0.5 }}>DROP</TouchButton>
+            <TouchButton ariaLabel={gs.over ? 'Restart' : paused ? 'Resume' : 'Pause'} onDown={togglePause} style={{ width: 'auto', padding: '0 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: 0.5 }}>
+              {gs.over ? 'RESTART' : paused ? 'RESUME' : 'PAUSE'}
+            </TouchButton>
+          </div>
+          <span className="mono muted" style={{ fontSize: 9 }}>▲ rotate · ◀▶ move · ▼ soft drop</span>
+        </div>
+
+        {/* overlay for pause / game-over — tap to resume/restart on touch */}
         {(gs.over || paused) && (
           <div
+            onClick={togglePause}
             style={{
               position: 'absolute', inset: 0, zIndex: 10,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: 'rgba(0,0,0,0.72)',
               borderRadius: 'inherit',
+              cursor: 'pointer',
             }}
           >
             <div style={{ textAlign: 'center' }}>
@@ -325,8 +366,8 @@ function Tetris({ onClose }) {
               </div>
               <div className="mono muted" style={{ fontSize: 11, marginTop: 6 }}>
                 {gs.over
-                  ? `Score: ${gs.score}  ·  press SPACE to restart`
-                  : 'SPACE or P to resume'}
+                  ? `Score: ${gs.score}  ·  press SPACE or tap to restart`
+                  : 'SPACE, P, or tap to resume'}
               </div>
             </div>
           </div>

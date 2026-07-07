@@ -19,21 +19,38 @@
   --poke-blue:    #2d63b5;
   --poke-green:   #4ea54a;
 
+  /* Pokédex type-chart hues — Skills section badges only. A wider bounded
+     palette than the 4 core theme accents, same as real Pokémon type colors. */
+  --poke-type-brew:    #b67a35;
+  --poke-type-systems: #a0414a;
+  --poke-type-data:    #2f7a6a;
+
   /* Theme accents — Basketball */
   --ball-orange:  #d96b2a;
   --ball-navy:    #1c2c4a;
   --ball-court:   #c98a4b;
   --ball-line:    #ecd9b8;
 
+  /* Text-safe accents — deeper, for accent-COLOURED TEXT on light surfaces
+     (the bright --accent fails 4.5:1 on cream/tan; these clear it). */
+  --poke-red-ink:    #a52a1d;
+  --ball-orange-ink: #8f3e12;
+
   /* Active accents — re-bound per theme */
   --accent:       var(--poke-red);
   --accent-2:     var(--poke-yellow);
   --accent-3:     var(--poke-blue);
+  --accent-ink:   var(--poke-red-ink);
 
   /* Window */
   --win-bg:       var(--paper);
   --win-bar:      var(--cream-2);
   --win-shadow:   6px 6px 0 0 var(--ink);
+
+  /* Window-control lights — fixed macOS colours, theme-independent (dim in dark mode) */
+  --win-red:      #ff5f57;
+  --win-amber:    #febc2e;
+  --win-green:    #28c840;
 
   /* Z-index */
   --z-cursor: 9999;
@@ -62,17 +79,33 @@
   --poke-blue:    #5a8fff;
   --ball-orange:  #ff8a3d;
   --ball-court:   #e0a76d;
+
+  --poke-type-brew:    #d99b4a;
+  --poke-type-systems: #c85a66;
+  --poke-type-data:    #3fa38f;
+
+  /* On dark surfaces the bright accent already clears contrast as text,
+     so accent-ink tracks the bright accent instead of the deep light-mode value. */
+  --poke-red-ink:    var(--poke-red);
+  --ball-orange-ink: var(--ball-orange);
+
+  /* Window-control lights dim so they don't glare against dark chrome */
+  --win-red:      #c14a40;
+  --win-amber:    #bf8d1e;
+  --win-green:    #1f9430;
 }
 
 [data-theme="pokemon"] {
-  --accent:   var(--poke-red);
-  --accent-2: var(--poke-yellow);
-  --accent-3: var(--poke-blue);
+  --accent:     var(--poke-red);
+  --accent-2:   var(--poke-yellow);
+  --accent-3:   var(--poke-blue);
+  --accent-ink: var(--poke-red-ink);
 }
 [data-theme="basketball"] {
-  --accent:   var(--ball-orange);
-  --accent-2: var(--ball-navy);
-  --accent-3: var(--ball-court);
+  --accent:     var(--ball-orange);
+  --accent-2:   var(--ball-navy);
+  --accent-3:   var(--ball-court);
+  --accent-ink: var(--ball-orange-ink);
 }
 [data-theme="basketball"][data-mode="dark"] {
   --accent-2: #5a78b8;
@@ -112,7 +145,7 @@ button, a {
   cursor: none;
 }
 
-a { color: var(--accent); text-decoration: none; }
+a { color: var(--accent-ink); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ============================================================
@@ -192,12 +225,9 @@ a:hover { text-decoration: underline; }
   border-radius: 50%;
   display: inline-block;
 }
-.window-bar .lights span:nth-child(1) { background: #ff5f57; }
-.window-bar .lights span:nth-child(2) { background: #febc2e; }
-.window-bar .lights span:nth-child(3) { background: #28c840; }
-[data-mode="dark"] .window-bar .lights span:nth-child(1) { background: #c14a40; }
-[data-mode="dark"] .window-bar .lights span:nth-child(2) { background: #bf8d1e; }
-[data-mode="dark"] .window-bar .lights span:nth-child(3) { background: #1f9430; }
+.window-bar .lights span:nth-child(1) { background: var(--win-red); }
+.window-bar .lights span:nth-child(2) { background: var(--win-amber); }
+.window-bar .lights span:nth-child(3) { background: var(--win-green); }
 
 .window-bar .title {
   flex: 1;
@@ -287,10 +317,6 @@ a:hover { text-decoration: underline; }
   .menu-bar .item:not(.brand):not([data-keep]) { display: none; }
   .menu-bar .clock { display: none; }
   .menu-bar .brand { margin-right: 8px; }
-  /* Dock — shrink */
-  .dock { gap: 3px; padding: 4px; bottom: 8px; max-width: calc(100vw - 16px); overflow-x: auto; }
-  .dock-icon { width: 36px; height: 36px; font-size: 8px; flex-shrink: 0; }
-  .dock-icon::after { display: none; } /* tooltips can clip viewport */
 }
 
 @media (max-width: 480px) {
@@ -426,6 +452,12 @@ a:hover { text-decoration: underline; }
   box-shadow: var(--win-shadow);
   z-index: var(--z-dock);
   align-items: center;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease-out;
+}
+.dock-hidden {
+  transform: translateX(-50%) translateY(calc(100% + 24px));
+  opacity: 0;
+  pointer-events: none;
 }
 .dock-icon {
   width: 44px; height: 44px;
@@ -464,6 +496,7 @@ a:hover { text-decoration: underline; }
   background: var(--accent);
   color: var(--paper);
 }
+.dock-icon-caption { display: none; }
 .dock-divider {
   width: 1.5px;
   height: 30px;
@@ -472,10 +505,24 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 700px) {
-  .dock { gap: 4px; padding: 4px; bottom: 8px; }
-  .dock-icon { width: 36px; height: 36px; font-size: 8px; }
   .menu-bar .item { padding: 6px 6px; font-size: 11px; }
   .menu-bar .brand { font-size: 9px; }
+  /* Dock — hover tooltips don't reach touch users, so swap in an
+     always-visible caption under each glyph instead of just hiding disambiguation. */
+  .dock { gap: 3px; padding: 4px 4px 5px; bottom: 8px; max-width: calc(100vw - 16px); overflow-x: auto; }
+  .dock-icon {
+    width: 44px; height: 52px; font-size: 9px; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  } /* 44px width = min touch target; extra height fits the caption */
+  .dock-icon::after { display: none; } /* tooltips can clip viewport; caption below replaces them */
+  .dock-icon-caption {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.2px;
+    color: var(--ink-mid);
+  }
+  .dock-icon:hover .dock-icon-caption { color: inherit; }
 }
 
 /* ============================================================
@@ -515,6 +562,29 @@ a:hover { text-decoration: underline; }
 .btn-primary:hover {
   background: var(--accent);
   color: var(--paper);
+}
+.btn-sm {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  border-radius: 2px;
+  box-shadow: 2px 2px 0 0 var(--line);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s;
+  cursor: none;
+}
+.btn-sm:hover {
+  background: var(--accent);
+  color: var(--paper);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 var(--line);
+}
+.btn-sm:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 0 var(--line);
 }
 
 /* ============================================================
@@ -635,7 +705,71 @@ a:hover { text-decoration: underline; }
   display: grid;
   place-items: center;
   padding: 20px;
+  overflow-y: auto;
 }
+@media (max-width: 700px) {
+  /* Touch controls add height below the board — anchor to the top
+     and let the modal scroll instead of clipping under the viewport. */
+  .modal-backdrop { align-items: flex-start; padding: 16px; }
+}
+
+/* ============================================================
+   Game touch controls — on-screen d-pad + action buttons for
+   Snake / Pong / Tetris. Hidden on fine-pointer (mouse) devices;
+   keyboard chrome already covers that input method.
+   ============================================================ */
+.game-touch-controls { display: none; }
+@media (pointer: coarse) {
+  .game-touch-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1.5px solid var(--line);
+  }
+}
+.game-touch-btn {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 0 var(--line);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+}
+.game-touch-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 0 var(--line);
+  background: var(--accent);
+  color: var(--paper);
+}
+.game-touch-btn--wide {
+  width: auto;
+  padding: 0 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+.game-dpad {
+  display: grid;
+  grid-template-areas: ".    up    ." "left  .     right" ".    down  .";
+  grid-template-columns: 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px;
+  gap: 4px;
+}
+.game-action-row { display: flex; gap: 10px; }
 
 /* ============================================================
    Scrollbars
