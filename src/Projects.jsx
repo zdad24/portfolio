@@ -214,7 +214,7 @@ function Projects() {
         {PROJECTS.map((p, i) => (
           <TiltCard
             key={p.name}
-            className={p.featured ? 'project-card--featured' : ''}
+            className={`project-card ${p.featured ? 'project-card--featured' : ''}`}
             style={{
               background: 'var(--paper)',
               border: p.featured ? '2px solid var(--accent)' : '2px solid var(--line)',

@@ -39,6 +39,7 @@ function PokeCard({ lang }) {
   const t = lang.poke;
   return (
     <div
+      className="dex-card"
       style={{
         background: 'var(--paper)',
         border: '2px solid var(--line)',
@@ -80,7 +81,7 @@ function PokeCard({ lang }) {
       >
         {/* big glyph */}
         <div
-          className="pixel-lg"
+          className="pixel-lg dex-glyph"
           style={{
             fontSize: 70,
             color: t.hue,
@@ -134,6 +135,7 @@ function BallCard({ lang }) {
   const b = lang.ball;
   return (
     <div
+      className="dex-card"
       style={{
         background: 'var(--paper)',
         border: '2px solid var(--line)',
@@ -184,6 +186,7 @@ function BallCard({ lang }) {
           }}
         >
           <div
+            className="dex-glyph"
             style={{
               background: 'var(--paper)',
               border: '2px solid var(--ink)',
@@ -240,6 +243,7 @@ function BallCard({ lang }) {
 function NeutralCard({ lang }) {
   return (
     <div
+      className="dex-card"
       style={{
         background: 'var(--paper)',
         border: '2px solid var(--line)',

@@ -45,7 +45,7 @@ function Contact() {
               href={l.href}
               target={l.href?.startsWith('http') ? '_blank' : undefined}
               rel={l.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className="row center"
+              className="row center contact-link"
               style={{
                 gap: 14,
                 padding: '12px 14px',
@@ -63,6 +63,7 @@ function Contact() {
               }}
             >
               <span
+                className="contact-link-icon"
                 style={{
                   width: 36, height: 36,
                   background: 'var(--ink)',
@@ -79,7 +80,11 @@ function Contact() {
                 <span className="label" style={{ fontSize: 8, color: 'var(--ink-mid)' }}>{l.k}</span>
                 <span className="mono" style={{ fontSize: 13 }}>{l.v}</span>
               </div>
-              <span className="mono muted" style={{ fontSize: 11 }}>
+              <span
+                key={copied === l.k ? 'copied' : 'idle'}
+                className={`mono muted ${copied === l.k ? 'contact-link-copied' : ''}`}
+                style={{ fontSize: 11 }}
+              >
                 {copied === l.k ? '✓ copied' : (l.href?.startsWith('http') ? '↗' : '⌘C')}
               </span>
             </a>

@@ -83,6 +83,7 @@ function AchievementToast({ achievement, index, onDone }) {
 
   return (
     <div
+      className="ach-toast"
       style={{
         position: 'fixed',
         bottom: 88 + index * 84,
@@ -98,14 +99,17 @@ function AchievementToast({ achievement, index, onDone }) {
         maxWidth: 320,
         opacity:   phase === 'enter' ? 0 : phase === 'exit' ? 0 : 1,
         transform: phase === 'enter'
-          ? 'translateX(20px)'
+          ? 'translateX(20px) scale(0.94)'
           : phase === 'exit'
-            ? 'translateX(20px)'
-            : 'translateX(0)',
-        transition: 'opacity 0.35s ease, transform 0.35s ease',
+            ? 'translateX(20px) scale(0.97)'
+            : 'translateX(0) scale(1)',
+        transition: phase === 'exit'
+          ? 'opacity 0.26s var(--ease-out-quint), transform 0.26s var(--ease-out-quint)'
+          : 'opacity 0.35s var(--ease-out-quint), transform 0.35s var(--ease-out-quint)',
         pointerEvents: 'none',
       }}
     >
+      {phase !== 'exit' && <div className="ach-ring" aria-hidden="true" />}
       <div
         style={{
           fontSize: 7,
@@ -119,6 +123,7 @@ function AchievementToast({ achievement, index, onDone }) {
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span
+          className="ach-icon"
           style={{
             fontSize: 22,
             fontFamily: "'Press Start 2P', monospace",

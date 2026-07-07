@@ -57,6 +57,9 @@
   --z-menu:   200;
   --z-dock:   200;
   --z-modal:  500;
+
+  /* Motion */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* DARK MODE — invert surfaces, keep accents glowing */
@@ -682,6 +685,64 @@ a:hover { text-decoration: underline; }
   .project-card--featured { grid-column: span 2; }
 }
 
+/* Project card entrance — sibling stagger once the section's own
+   .reveal/.in fires, so cards arrive in sequence rather than as one
+   flat block. The featured card gets a slightly longer pause + a touch
+   of scale so its arrival reads as the payoff, not just card #4. */
+.project-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s var(--ease-out-quint), transform 0.5s var(--ease-out-quint);
+}
+.window.in .project-card { opacity: 1; transform: translateY(0); }
+.window.in .project-card:nth-child(1) { transition-delay: 0ms; }
+.window.in .project-card:nth-child(2) { transition-delay: 70ms; }
+.window.in .project-card:nth-child(3) { transition-delay: 140ms; }
+.window.in .project-card--featured {
+  transition-delay: 240ms;
+  transition-duration: 0.6s;
+}
+.project-card--featured { transform: translateY(20px) scale(0.98); }
+.window.in .project-card--featured { transform: translateY(0) scale(1); }
+
+/* DevDex / roster / stack cards — the Skills section copy literally
+   says "hover any card"; give it the lift + shadow-grow every other
+   button/link in the system already has. */
+.dex-card {
+  transition: transform 0.2s var(--ease-out-quint), box-shadow 0.2s var(--ease-out-quint);
+}
+.dex-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 7px 7px 0 0 var(--line);
+}
+.dex-card .dex-glyph { transition: transform 0.2s var(--ease-out-quint); }
+.dex-card:hover .dex-glyph { transform: scale(1.08); }
+
+/* Contact direct-line links — same chunky press-and-lift language as
+   .btn, applied to what was previously a static row. */
+.contact-link {
+  transition: transform 0.16s var(--ease-out-quint), box-shadow 0.16s var(--ease-out-quint), background 0.16s ease;
+}
+.contact-link:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 0 var(--line);
+  background: var(--paper);
+}
+.contact-link:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 0 var(--line);
+}
+.contact-link-icon { transition: background 0.16s ease; }
+.contact-link:hover .contact-link-icon { background: var(--accent); }
+.contact-link-copied {
+  display: inline-block;
+  animation: copiedPop 0.3s var(--ease-out-quint) both;
+}
+@keyframes copiedPop {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ============================================================
    Tag chip
    ============================================================ */
@@ -706,6 +767,30 @@ a:hover { text-decoration: underline; }
    ============================================================ */
 @keyframes blink { 50% { opacity: 0; } }
 .caret { animation: blink 1s steps(1) infinite; }
+
+/* Achievement toast — icon materializes a beat after the frame slides
+   in, and a hard-edged accent ring (no blur, per the no-blur rule)
+   flashes outward once to sell the "unlocked" moment. */
+.ach-icon {
+  display: inline-block;
+  animation: achIconPop 0.4s var(--ease-out-quint) 0.12s both;
+}
+@keyframes achIconPop {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.ach-ring {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--accent);
+  pointer-events: none;
+  opacity: 0;
+  animation: achRingPulse 0.6s var(--ease-out-quint) 0.28s both;
+}
+@keyframes achRingPulse {
+  0%   { opacity: 0.9; transform: scale(0.95); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
 
 @keyframes drift {
   0%, 100% { transform: translate(0, 0); }
