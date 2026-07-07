@@ -656,10 +656,16 @@ a:hover { text-decoration: underline; }
 
 /* ============================================================
    Reveal animation (used by IntersectionObserver)
+   Visible by default: no-JS, crawlers, and headless capture tools
+   that never fire the observer still see full content. Only
+   .armed (set by JS on mount, once the observer is guaranteed to
+   run) hides the element until scroll brings it into view.
    ============================================================ */
-.reveal {
+.reveal.armed {
   opacity: 0;
   transform: translateY(28px);
+}
+.reveal {
   transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1);
 }
 .reveal.in {
@@ -689,9 +695,11 @@ a:hover { text-decoration: underline; }
    .reveal/.in fires, so cards arrive in sequence rather than as one
    flat block. The featured card gets a slightly longer pause + a touch
    of scale so its arrival reads as the payoff, not just card #4. */
-.project-card {
+.window.armed .project-card {
   opacity: 0;
   transform: translateY(20px);
+}
+.project-card {
   transition: opacity 0.5s var(--ease-out-quint), transform 0.5s var(--ease-out-quint);
 }
 .window.in .project-card { opacity: 1; transform: translateY(0); }
@@ -702,7 +710,7 @@ a:hover { text-decoration: underline; }
   transition-delay: 240ms;
   transition-duration: 0.6s;
 }
-.project-card--featured { transform: translateY(20px) scale(0.98); }
+.window.armed .project-card--featured { transform: translateY(20px) scale(0.98); }
 .window.in .project-card--featured { transform: translateY(0) scale(1); }
 
 /* DevDex / roster / stack cards — the Skills section copy literally
@@ -911,6 +919,19 @@ a:hover { text-decoration: underline; }
 .muted { color: var(--ink-mid); }
 
 /* ============================================================
+   Placeholder text — WCAG contrast
+   Browser-default placeholder gray (~rgb(117,117,117)) only hits
+   ~3.4:1 on --cream-2, under the 4.5:1 body-text bar. --ink-mid
+   clears 6.5:1 on both --cream-2 and --paper while still reading
+   as visually secondary to filled input text.
+   ============================================================ */
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-mid);
+  opacity: 1;
+}
+
+/* ============================================================
    Focus-visible — keyboard accessibility
    ============================================================ */
 :focus-visible {
@@ -934,7 +955,9 @@ button:focus-visible, a:focus-visible {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal.armed { opacity: 1; transform: none; transition: none; }
+  .window.armed .project-card,
+  .window.armed .project-card--featured { opacity: 1; transform: none; }
   .crt-overlay { display: none; }
   .glitchable:hover { animation: none; }
   .tilt { transition: none; }
@@ -945,7 +968,9 @@ html[data-motion="reduced"] * {
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
 }
-html[data-motion="reduced"] .reveal { opacity: 1; transform: none; transition: none; }
+html[data-motion="reduced"] .reveal.armed { opacity: 1; transform: none; transition: none; }
+html[data-motion="reduced"] .window.armed .project-card,
+html[data-motion="reduced"] .window.armed .project-card--featured { opacity: 1; transform: none; }
 html[data-motion="reduced"] .crt-overlay { display: none; }
 html[data-motion="reduced"] .glitchable:hover { animation: none; }
 html[data-motion="reduced"] .tilt { transition: none; }

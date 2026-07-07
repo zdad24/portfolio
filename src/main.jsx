@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
 
@@ -81,9 +81,15 @@ function App() {
     return () => window.removeEventListener('keydown', onKey);
   }, [t.sound]);
 
-  /* ───────── IntersectionObserver — reveal sections ───────── */
-  useEffect(() => {
+  /* ───────── IntersectionObserver — reveal sections ─────────
+     .reveal ships visible by default so no-JS/crawler/headless-capture
+     paths never show blank content. Only elements JS can confirm it will
+     animate get armed hidden, and a timeout guarantees eventual visibility
+     even if the observer never fires (e.g. full-page screenshot tools that
+     resize without dispatching a real scroll). */
+  useLayoutEffect(() => {
     const els = document.querySelectorAll('.reveal');
+    els.forEach(el => el.classList.add('armed'));
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -93,7 +99,10 @@ function App() {
       });
     }, { threshold: 0.12 });
     els.forEach(el => io.observe(el));
-    return () => io.disconnect();
+    const fallback = setTimeout(() => {
+      els.forEach(el => el.classList.add('in'));
+    }, 2000);
+    return () => { io.disconnect(); clearTimeout(fallback); };
   }, []);
 
   /* ───────── Sound — bind to interactive hover/click ───────── */
