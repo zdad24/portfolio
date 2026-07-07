@@ -187,10 +187,17 @@ a:hover { text-decoration: underline; }
   border: 2px solid var(--line);
   border-radius: 4px;
   box-shadow: var(--win-shadow);
-  margin-bottom: 64px;
+  /* Fluid base gap — replaces three fixed per-breakpoint values that had
+     drifted out of sync (64/40/36px) with one rule that scales cleanly. */
+  margin-bottom: clamp(40px, 7vw, 64px);
   position: relative;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
+/* Section rhythm: most transitions use the default gap above, but a few
+   are deliberately tighter (sections that read as one continuous beat)
+   or more generous (a pause before a pivot or the closing CTA). */
+.window--tight { margin-bottom: clamp(20px, 3.5vw, 32px); }
+.window--generous { margin-bottom: clamp(64px, 11vw, 112px); }
 
 .window-bar {
   display: flex;
@@ -246,7 +253,6 @@ a:hover { text-decoration: underline; }
 }
 @media (max-width: 700px) {
   .window-body { padding: 20px; }
-  .window { margin-bottom: 40px; }
 }
 
 .window-statusbar {
@@ -311,7 +317,6 @@ a:hover { text-decoration: underline; }
   }
   /* Tighten window padding */
   .window-body { padding: 20px !important; }
-  .window { margin-bottom: 36px; }
   /* Smaller dramatic name */
   .pixel-xl { font-size: clamp(48px, 14vw, 96px); }
   .pixel-lg { font-size: clamp(40px, 9vw, 72px); }
@@ -666,6 +671,15 @@ a:hover { text-decoration: underline; }
   transform-style: preserve-3d;
   transition: transform 0.2s ease;
   will-change: transform;
+}
+
+/* Featured project card spans 2 grid tracks — but only once the
+   auto-fit grid has actually resolved to 2+ columns (~700px+). Forcing
+   span 2 unconditionally makes the grid fabricate an oversized implicit
+   column on narrow viewports where only 1 column fits, blowing out
+   the layout width. */
+@media (min-width: 700px) {
+  .project-card--featured { grid-column: span 2; }
 }
 
 /* ============================================================

@@ -256,7 +256,7 @@ function Hero({ theme, onScrollTo }) {
       title="~/zahadad — login.sh"
       meta="zsh — 80×24"
       id="hero"
-      className="hero-window"
+      className="hero-window window--tight"
       bodyStyle={{ padding: 0 }}
       status={{ left: '// session started', right: 'CONNECTED · 1 user' }}
     >

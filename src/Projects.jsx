@@ -85,6 +85,7 @@ const PROJECTS = [
     demo: 'https://rerouteapp.ca',
     comingSoon: false,
     art: 'reroute',
+    featured: true,
   },
 ];
 
@@ -213,9 +214,10 @@ function Projects() {
         {PROJECTS.map((p, i) => (
           <TiltCard
             key={p.name}
+            className={p.featured ? 'project-card--featured' : ''}
             style={{
               background: 'var(--paper)',
-              border: '2px solid var(--line)',
+              border: p.featured ? '2px solid var(--accent)' : '2px solid var(--line)',
               boxShadow: '5px 5px 0 0 var(--line)',
               padding: 0,
               position: 'relative',
@@ -242,7 +244,7 @@ function Projects() {
               <span className="muted">#{String(i + 1).padStart(2, '0')}</span>
             </div>
             {/* art */}
-            <div style={{ height: 130, borderBottom: '2px solid var(--line)' }}>
+            <div style={{ height: p.featured ? 170 : 130, borderBottom: '2px solid var(--line)' }}>
               <ProjectArt kind={p.art}/>
             </div>
             {/* body */}
@@ -251,7 +253,7 @@ function Projects() {
                 <h3 className="pixel-sm" style={{ margin: 0, lineHeight: 1, letterSpacing: 0.5 }}>
                   {p.name}
                 </h3>
-                <span className="label" style={{ color: 'var(--accent-ink)' }}>OPEN</span>
+                <span className="label" style={{ color: 'var(--accent-ink)' }}>{p.featured ? '● LIVE' : 'OPEN'}</span>
               </div>
               <p className="mono" style={{ margin: '0 0 12px', fontSize: 12.5, lineHeight: 1.5, color: 'var(--ink-soft)' }}>
                 {p.blurb}

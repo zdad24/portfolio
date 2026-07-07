@@ -7,6 +7,7 @@ function Education() {
       title="education.txt"
       meta="2 records"
       id="education"
+      className="window--generous"
       status={{ left: '// study + credentials', right: 'EOF' }}
     >
       <WinHeading

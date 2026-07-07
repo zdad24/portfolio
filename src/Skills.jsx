@@ -312,6 +312,7 @@ function Skills({ theme }) {
       }
       meta={`theme: ${theme}`}
       id="skills"
+      className="window--tight"
       status={{ left: '// the stack', right: `${LANGS.length + FRAMEWORKS.length + TOOLS.length} entries` }}
     >
       <WinHeading
