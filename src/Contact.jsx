@@ -17,6 +17,7 @@ function Contact() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  const [invalidFields, setInvalidFields] = useState([]);
 
   function copy(text, key) {
     navigator.clipboard?.writeText(text);
@@ -101,10 +102,18 @@ function Contact() {
             const name = form.name.trim();
             const from = form.from.trim();
             const body = form.body.trim();
-            if (!name || !from || !body) {
-              setError('all fields are required');
+            const missing = [];
+            if (!from) missing.push('from');
+            if (!name) missing.push('name');
+            if (!body) missing.push('body');
+            if (missing.length) {
+              setInvalidFields(missing);
+              const labels = { from: 'FROM', name: 'NAME', body: 'BODY' };
+              setError(`${missing.map(f => labels[f]).join(', ')} required`);
+              document.getElementById(`contact-${missing[0]}`)?.focus();
               return;
             }
+            setInvalidFields([]);
             setSending(true);
             setError(null);
             try {
@@ -152,23 +161,24 @@ function Contact() {
             aria-hidden="true"
           />
 
-          <Field name="from" type="email" autoComplete="email" label="FROM" value={form.from} onChange={v => setForm({ ...form, from: v })} placeholder="you@company.com" maxLength={MAX.from} required />
-          <Field name="name" autoComplete="name" label="NAME" value={form.name} onChange={v => setForm({ ...form, name: v })} placeholder="Jane Recruiter" maxLength={MAX.name} required />
+          <Field name="from" type="email" autoComplete="email" label="FROM" value={form.from} onChange={v => { setForm({ ...form, from: v }); setInvalidFields(f => f.filter(x => x !== 'from')); }} placeholder="you@company.com" maxLength={MAX.from} required invalid={invalidFields.includes('from')} />
+          <Field name="name" autoComplete="name" label="NAME" value={form.name} onChange={v => { setForm({ ...form, name: v }); setInvalidFields(f => f.filter(x => x !== 'name')); }} placeholder="Jane Recruiter" maxLength={MAX.name} required invalid={invalidFields.includes('name')} />
           <Field
             name="body"
             label="BODY"
             value={form.body}
-            onChange={v => setForm({ ...form, body: v })}
+            onChange={v => { setForm({ ...form, body: v }); setInvalidFields(f => f.filter(x => x !== 'body')); }}
             placeholder="we have an internship and you'd love it..."
             textarea
             maxLength={MAX.body}
             required
+            invalid={invalidFields.includes('body')}
           />
 
           <div className="row between center" style={{ marginTop: 4 }}>
             <span className="mono muted" style={{ fontSize: 10 }} role="status" aria-live="polite">
               {sent
-                ? '✓ sent — I\'ll reply soon :)'
+                ? <SendLog/>
                 : error
                   ? `✗ ${error}`
                   : `${form.body.length}/${MAX.body} chars · auto-saved`}
@@ -191,11 +201,47 @@ function Contact() {
   );
 }
 
-function Field({ name, label, value, onChange, placeholder, textarea, type = 'text', required, autoComplete, maxLength }) {
+/* Mirrors Hero's BootLog cadence for a closing beat instead of a flat
+   "sent" line — a small terminal readout replacing a single status line. */
+function useReducedMotion() {
+  const check = () =>
+    document.documentElement.getAttribute('data-motion') === 'reduced' ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const [reduced, setReduced] = useState(check);
+  React.useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduced(check());
+    mq.addEventListener('change', update);
+    const obs = new MutationObserver(update);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
+    return () => { mq.removeEventListener('change', update); obs.disconnect(); };
+  }, []);
+  return reduced;
+}
+
+function SendLog() {
+  const lines = ['tx_queue ....... ok', 'mail_relay ..... ok', 'sent — I\'ll reply soon :)'];
+  const reduced = useReducedMotion();
+  const [i, setI] = useState(reduced ? lines.length - 1 : 0);
+  React.useEffect(() => {
+    if (reduced || i >= lines.length - 1) return;
+    const t = setTimeout(() => setI(v => v + 1), 260);
+    return () => clearTimeout(t);
+  }, [i, reduced]);
+  const settled = i === lines.length - 1;
+  return (
+    <span style={{ color: settled ? 'var(--accent-ink)' : 'var(--ink-mid)' }}>
+      {settled ? '✓ ' : '▸ '}{lines[i]}
+    </span>
+  );
+}
+
+function Field({ name, label, value, onChange, placeholder, textarea, type = 'text', required, autoComplete, maxLength, invalid }) {
   const id = `contact-${name}`;
+  const errorId = `${id}-error`;
   const common = {
     background: 'var(--cream-2)',
-    border: '2px solid var(--line)',
+    border: `2px solid ${invalid ? 'var(--accent-ink)' : 'var(--line)'}`,
     padding: '10px 12px',
     fontFamily: "'JetBrains Mono', monospace",
     fontSize: 13,
@@ -207,7 +253,14 @@ function Field({ name, label, value, onChange, placeholder, textarea, type = 'te
   };
   return (
     <label className="col gap-2" htmlFor={id}>
-      <span className="label" style={{ fontSize: 8, color: 'var(--ink-mid)' }}>{label}</span>
+      <span className="row between center">
+        <span className="label" style={{ fontSize: 8, color: 'var(--ink-mid)' }}>{label}</span>
+        {invalid && (
+          <span id={errorId} className="label" style={{ fontSize: 8, color: 'var(--accent-ink)' }} role="alert">
+            required
+          </span>
+        )}
+      </span>
       {textarea ? (
         <textarea
           id={id}
@@ -219,6 +272,8 @@ function Field({ name, label, value, onChange, placeholder, textarea, type = 'te
           required={required}
           maxLength={maxLength}
           rows={5}
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? errorId : undefined}
           style={{ ...common, resize: 'vertical', minHeight: 96 }}
         />
       ) : (
@@ -232,6 +287,8 @@ function Field({ name, label, value, onChange, placeholder, textarea, type = 'te
           maxLength={maxLength}
           placeholder={placeholder}
           required={required}
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? errorId : undefined}
           style={common}
         />
       )}

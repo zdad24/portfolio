@@ -291,7 +291,7 @@ function Hero({ theme, onScrollTo }) {
               <span style={{ color: 'var(--accent-ink)' }}>@ York University</span>. I prototype
               AI tools, ship dev infra, and build things that wouldn&apos;t exist otherwise.
             </p>
-            <div className="row gap-3 wrap">
+            <div className="row gap-3 wrap" data-dock-clear>
               <Magnetic>
                 <a className="btn btn-primary" href="#projects" onClick={(e) => { e.preventDefault(); onScrollTo('projects'); }}>
                   ▸ view projects

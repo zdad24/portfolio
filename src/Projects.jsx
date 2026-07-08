@@ -264,7 +264,7 @@ function Projects() {
               <div className="row wrap" style={{ gap: 6, marginBottom: 14 }}>
                 {p.tech.map(t => <span className="chip" key={t}>{t}</span>)}
               </div>
-              <div className="row gap-3">
+              <div className="row gap-3" data-dock-clear>
                 {p.github ? (
                   <a className="btn" href={p.github} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} source on GitHub`}>
                     <span style={{ fontFamily: "'JetBrains Mono'" }}>{'</>'}</span> source

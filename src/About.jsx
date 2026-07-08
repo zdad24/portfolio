@@ -800,7 +800,7 @@ function About() {
           <hr className="dashed-rule" style={{ margin: '8px 0' }}/>
           <div className="label muted">▸ QUICK_CMDS</div>
           <div className="row wrap" style={{ gap: 6 }}>
-            {['help','whoami','git log','man zahadad','hack','coffee','matrix'].map(c => (
+            {['help','whoami','git log','man zahadad'].map(c => (
               <button
                 key={c}
                 className="btn-sm"

@@ -25,6 +25,13 @@
   --poke-type-systems: #a0414a;
   --poke-type-data:    #2f7a6a;
 
+  /* Fixed dark ink for the light-hue type badges (SERPENT/green, ELECTRIC/yellow,
+     BREW/brew) — unlike --ink, this does NOT re-bind in dark mode, because those
+     three hues stay light-to-bright in both modes and always need dark text on top.
+     The other three type hues (METAL/SYSTEMS/DATA) stay dark enough for var(--paper)
+     in both modes, which already flips correctly per theme. */
+  --dex-badge-ink: #15161a;
+
   /* Theme accents — Basketball */
   --ball-orange:  #d96b2a;
   --ball-navy:    #1c2c4a;

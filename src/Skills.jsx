@@ -6,13 +6,13 @@ import { Win, WinHeading } from './Window.jsx'
    ============================================================ */
 
 const LANGS = [
-  { name: 'Python',     short: 'PY',  hp: 92, poke: { type: 'SERPENT',  hue: 'var(--poke-green)', moves: ['Quick.Script', 'Async.Coil'] },
+  { name: 'Python',     short: 'PY',  hp: 92, poke: { type: 'SERPENT',  hue: 'var(--poke-green)', darkText: true, moves: ['Quick.Script', 'Async.Coil'] },
     ball: { pos: 'PG',  jersey: 7, line: 'Playmaker · sets up everything' }, neutral: 'Daily driver — scripting, ML, FastAPI' },
-  { name: 'JavaScript', short: 'JS',  hp: 88, poke: { type: 'ELECTRIC', hue: 'var(--poke-yellow)', moves: ['Event.Loop', 'Promise.All']  },
+  { name: 'JavaScript', short: 'JS',  hp: 88, poke: { type: 'ELECTRIC', hue: 'var(--poke-yellow)', darkText: true, moves: ['Event.Loop', 'Promise.All']  },
     ball: { pos: 'SG',  jersey: 23, line: 'Sharpshooter · runs the web' }, neutral: 'Frontend + Node services' },
   { name: 'TypeScript', short: 'TS',  hp: 90, poke: { type: 'METAL',    hue: 'var(--poke-blue)', moves: ['Strict.Mode', 'Infer.Beam']    },
     ball: { pos: 'SF',  jersey: 33, line: 'Two-way · types + speed' }, neutral: 'Default for anything production' },
-  { name: 'Java',       short: 'JV',  hp: 78, poke: { type: 'BREW',     hue: 'var(--poke-type-brew)', moves: ['NullPointerException', 'GC.Cycle']    },
+  { name: 'Java',       short: 'JV',  hp: 78, poke: { type: 'BREW',     hue: 'var(--poke-type-brew)', darkText: true, moves: ['NullPointerException', 'GC.Cycle']    },
     ball: { pos: 'PF',  jersey: 32, line: 'Workhorse · OOP backbone' }, neutral: 'OOP foundation, coursework, Android' },
   { name: 'C / C++',    short: 'C',   hp: 72, poke: { type: 'SYSTEMS',  hue: 'var(--poke-type-systems)', moves: ['Manual.Memory', 'Pointer.Strike']  },
     ball: { pos: 'C',   jersey: 50, line: 'Big man · raw performance' }, neutral: 'Systems courses, perf-critical paths' },
@@ -55,7 +55,7 @@ function PokeCard({ lang }) {
           padding: '8px 12px',
           borderBottom: '2px solid var(--line)',
           background: t.hue,
-          color: 'var(--paper)',
+          color: t.darkText ? 'var(--dex-badge-ink)' : 'var(--paper)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
