@@ -347,6 +347,20 @@ a:hover { text-decoration: underline; }
   /* (auto-fit already handles this — just ensure min is small enough) */
 }
 
+/* Short-viewport-height compression — on ~760-820px-tall desktop windows
+   (common laptop screens), the Hero's default vertical rhythm puts the CTA
+   row low enough to sit inside the Dock's fixed clearance zone. Rather than
+   let the two physically overlap, tighten the rhythm above the CTA row so
+   it clears the dock on its own. Scoped to the two-column desktop layout
+   (min-width matches where .hero-grid is side-by-side, i.e. above the
+   820px breakpoint that switches it to a single column). */
+@media (max-height: 820px) and (min-width: 821px) {
+  .hero-left { padding-top: 20px !important; padding-bottom: 20px !important; }
+  .hero-boot-wrap { margin-bottom: 12px !important; }
+  .hero-tagline { margin: 10px 0 14px !important; }
+  .hero-grid .pixel-xl { font-size: clamp(56px, 9vw, 120px); }
+}
+
 /* ============================================================
    Original layout overrides (above, but include max-width guard for big screens)
    ============================================================ */
@@ -470,12 +484,6 @@ a:hover { text-decoration: underline; }
   box-shadow: var(--win-shadow);
   z-index: var(--z-dock);
   align-items: center;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease-out;
-}
-.dock-hidden {
-  transform: translateX(-50%) translateY(calc(100% + 24px));
-  opacity: 0;
-  pointer-events: none;
 }
 .dock-icon {
   width: 44px; height: 44px;
@@ -720,6 +728,32 @@ a:hover { text-decoration: underline; }
 .window.armed .project-card--featured { transform: translateY(20px) scale(0.98); }
 .window.in .project-card--featured { transform: translateY(0) scale(1); }
 
+/* Experience timeline — same sibling-stagger language as the project
+   cards, so the receipts arrive in sequence down the rail rather than
+   as one flat block once the section scrolls into view. */
+.window.armed .exp-entry {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.exp-entry {
+  transition: opacity 0.5s var(--ease-out-quint), transform 0.5s var(--ease-out-quint);
+}
+.window.in .exp-entry { opacity: 1; transform: translateY(0); }
+.window.in article.exp-entry:nth-of-type(1) { transition-delay: 0ms; }
+.window.in article.exp-entry:nth-of-type(2) { transition-delay: 90ms; }
+.window.in article.exp-entry:nth-of-type(3) { transition-delay: 180ms; }
+.window.in article.exp-entry:nth-of-type(4) { transition-delay: 270ms; }
+
+/* Current-role node gets a slow pulse — the one place on the timeline
+   where "still happening" is a fact worth signalling, not decoration. */
+@keyframes expNodePulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  50%      { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.exp-node--current {
+  animation: expNodePulse 2.2s ease-in-out infinite;
+}
+
 /* DevDex / roster / stack cards — the Skills section copy literally
    says "hover any card"; give it the lift + shadow-grow every other
    button/link in the system already has. */
@@ -836,6 +870,22 @@ a:hover { text-decoration: underline; }
   place-items: center;
   padding: 20px;
   overflow-y: auto;
+  transition: opacity 0.18s ease-out;
+}
+.modal-backdrop.is-entering,
+.modal-backdrop.is-closing {
+  opacity: 0;
+}
+.modal-backdrop.is-closing {
+  pointer-events: none;
+}
+.modal-backdrop > .window {
+  transition: opacity 0.2s var(--ease-out-quint), transform 0.2s var(--ease-out-quint);
+}
+.modal-backdrop.is-entering > .window,
+.modal-backdrop.is-closing > .window {
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
 }
 @media (max-width: 700px) {
   /* Touch controls add height below the board — anchor to the top
@@ -964,10 +1014,12 @@ button:focus-visible, a:focus-visible {
   }
   .reveal.armed { opacity: 1; transform: none; transition: none; }
   .window.armed .project-card,
-  .window.armed .project-card--featured { opacity: 1; transform: none; }
+  .window.armed .project-card--featured,
+  .window.armed .exp-entry { opacity: 1; transform: none; }
   .crt-overlay { display: none; }
   .glitchable:hover { animation: none; }
   .tilt { transition: none; }
+  .exp-node--current { animation: none; }
 }
 
 html[data-motion="reduced"] * {
@@ -977,7 +1029,9 @@ html[data-motion="reduced"] * {
 }
 html[data-motion="reduced"] .reveal.armed { opacity: 1; transform: none; transition: none; }
 html[data-motion="reduced"] .window.armed .project-card,
-html[data-motion="reduced"] .window.armed .project-card--featured { opacity: 1; transform: none; }
+html[data-motion="reduced"] .window.armed .project-card--featured,
+html[data-motion="reduced"] .window.armed .exp-entry { opacity: 1; transform: none; }
 html[data-motion="reduced"] .crt-overlay { display: none; }
 html[data-motion="reduced"] .glitchable:hover { animation: none; }
 html[data-motion="reduced"] .tilt { transition: none; }
+html[data-motion="reduced"] .exp-node--current { animation: none; }

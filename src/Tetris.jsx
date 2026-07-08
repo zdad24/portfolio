@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useFitCell } from './useFitCell.js'
+import { useDismiss } from './useDismiss.js'
 import { DPad, TouchButton } from './GameTouchControls.jsx'
 
 /* ============================================================
@@ -111,6 +112,7 @@ function ghostY(board, piece) {
 
 /* ── Tetris component ──────────────────────────── */
 function Tetris({ onClose }) {
+  const [phase, dismiss]    = useDismiss(onClose);
   const [gs, setGs]         = useState(initGame);
   const [paused, setPaused] = useState(false);
   const pausedRef           = useRef(false);
@@ -190,7 +192,7 @@ function Tetris({ onClose }) {
   /* keyboard */
   useEffect(() => {
     function onKey(e) {
-      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Escape') { dismiss(); return; }
 
       if (e.key === ' ' || e.key === 'p' || e.key === 'P') { togglePause(); e.preventDefault(); return; }
 
@@ -209,7 +211,7 @@ function Tetris({ onClose }) {
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  }, [dismiss]);
 
   /* ── build display board ─────────────── */
   const display = gs.board.map(r => [...r]);
@@ -240,7 +242,7 @@ function Tetris({ onClose }) {
   const nOffC = Math.floor((4 - nsh[0].length) / 2);
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className={`modal-backdrop${phase !== 'open' ? ` is-${phase}` : ''}`} onClick={dismiss}>
       <div
         className="window"
         style={{ width: 'min(440px, 96vw)', marginBottom: 0, position: 'relative' }}
@@ -250,7 +252,7 @@ function Tetris({ onClose }) {
           <div className="lights"><span></span><span></span><span></span></div>
           <div className="title mono">tetris.exe</div>
           <button
-            onClick={onClose}
+            onClick={dismiss}
             style={{ background: 'transparent', border: 'none', font: 'inherit', cursor: 'none', color: 'var(--ink)' }}
           >✕</button>
         </header>

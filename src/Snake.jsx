@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useFitCell } from './useFitCell.js'
+import { useDismiss } from './useDismiss.js'
 import { DPad, TouchButton } from './GameTouchControls.jsx'
 
 /* ============================================================
@@ -7,6 +8,7 @@ import { DPad, TouchButton } from './GameTouchControls.jsx'
    Triggered by Konami code. Original 8x8-ish grid snake.
    ============================================================ */
 function Snake({ onClose, onChirp }) {
+  const [phase, dismiss] = useDismiss(onClose);
   const COLS = 18, ROWS = 12;
   const [snake, setSnake] = useState(() => [[8, 6], [7, 6], [6, 6]]);
   const [dir, setDir] = useState([1, 0]);
@@ -43,7 +45,7 @@ function Snake({ onClose, onChirp }) {
 
   useEffect(() => {
     function onKey(e) {
-      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Escape') { dismiss(); return; }
       if (e.key === ' ')      { setPaused(p => !p); e.preventDefault(); return; }
       if (e.key === 'r' && over) { restart(); return; }
       const map = {
@@ -59,7 +61,7 @@ function Snake({ onClose, onChirp }) {
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [over, onClose]);
+  }, [over, dismiss]);
 
   useEffect(() => {
     if (over || paused) return;
@@ -86,7 +88,7 @@ function Snake({ onClose, onChirp }) {
   const [gridWrapRef, CELL] = useFitCell(COLS, 22, 12);
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className={`modal-backdrop${phase !== 'open' ? ` is-${phase}` : ''}`} onClick={dismiss}>
       <div
         className="window"
         style={{ width: 'min(640px, 96vw)', marginBottom: 0 }}
@@ -96,7 +98,7 @@ function Snake({ onClose, onChirp }) {
           <div className="lights"><span></span><span></span><span></span></div>
           <div className="title mono">snake.exe — easter_egg</div>
           <button
-            onClick={onClose}
+            onClick={dismiss}
             style={{ background: 'transparent', border: 'none', font: 'inherit', cursor: 'none', color: 'var(--ink)' }}
           >
             ✕

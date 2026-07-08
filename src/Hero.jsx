@@ -262,8 +262,8 @@ function Hero({ theme, onScrollTo }) {
     >
       <div className="hero-grid">
         {/* LEFT — boot log → headline */}
-        <div style={{ padding: '36px 32px 32px', borderRight: '2px solid var(--line)' }}>
-          <div style={{ marginBottom: 24 }}>
+        <div className="hero-left" style={{ padding: '36px 32px 32px', borderRight: '2px solid var(--line)' }}>
+          <div className="hero-boot-wrap" style={{ marginBottom: 24 }}>
             <BootLog onDone={() => setBooted(true)} />
           </div>
 
@@ -286,12 +286,12 @@ function Hero({ theme, onScrollTo }) {
               <GlitchName target="JARIF" active={booted}/>
               <span style={{ color: 'var(--accent)' }}>.</span>
             </h1>
-            <p className="mono" style={{ margin: '18px 0 22px', maxWidth: 460 }}>
+            <p className="mono hero-tagline" style={{ margin: '18px 0 22px', maxWidth: 460 }}>
               SWE Intern <span style={{ color: 'var(--accent-ink)' }}>@ 4D</span> · Computer Science{' '}
               <span style={{ color: 'var(--accent-ink)' }}>@ York University</span>. I prototype
               AI tools, ship dev infra, and build things that wouldn&apos;t exist otherwise.
             </p>
-            <div className="row gap-3 wrap" data-dock-clear>
+            <div className="row gap-3 wrap">
               <Magnetic>
                 <a className="btn btn-primary" href="#projects" onClick={(e) => { e.preventDefault(); onScrollTo('projects'); }}>
                   ▸ view projects

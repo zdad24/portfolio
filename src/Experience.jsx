@@ -90,6 +90,7 @@ function Experience() {
         {EXPERIENCE.map((e, i) => (
           <article
             key={i}
+            className="exp-entry"
             style={{
               position: 'relative',
               marginBottom: 28,
@@ -99,9 +100,10 @@ function Experience() {
               padding: 20,
             }}
           >
-            {/* Node */}
+            {/* Node — pulses on the current role to signal "still happening" */}
             <span
               aria-hidden="true"
+              className={i === 0 ? 'exp-node--current' : ''}
               style={{
                 position: 'absolute',
                 left: -27,

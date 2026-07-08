@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Snake from './Snake.jsx'
 import Pong from './Pong.jsx'
 import Tetris from './Tetris.jsx'
+import { useDismiss } from './useDismiss.js'
 
 /* ============================================================
    GamesFolder — dock "Games/" folder that opens a launcher
@@ -52,6 +53,7 @@ const GAME_LIST = [
 
 function GamesFolder({ onClose, onChirp, sound }) {
   const [active, setActive] = useState(null); // null = launcher, else game id
+  const [phase, dismiss] = useDismiss(onClose);
 
   /* route to the selected game */
   if (active === 'snake')  return <Snake  onClose={() => setActive(null)} onChirp={onChirp} />;
@@ -60,7 +62,7 @@ function GamesFolder({ onClose, onChirp, sound }) {
 
   /* ── launcher picker ─────────────────────── */
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className={`modal-backdrop${phase !== 'open' ? ` is-${phase}` : ''}`} onClick={dismiss}>
       <div
         className="window"
         style={{ width: 'min(340px, 96vw)', marginBottom: 0 }}
@@ -70,7 +72,7 @@ function GamesFolder({ onClose, onChirp, sound }) {
           <div className="lights"><span></span><span></span><span></span></div>
           <div className="title mono">games/</div>
           <button
-            onClick={onClose}
+            onClick={dismiss}
             style={{ background: 'transparent', border: 'none', font: 'inherit', cursor: 'none', color: 'var(--ink)' }}
           >✕</button>
         </header>

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TouchButton } from './GameTouchControls.jsx'
+import { useDismiss } from './useDismiss.js'
 
 /* ============================================================
    Pong — canvas-based 1P vs AI.
    W / S or Arrow Up / Down to move.
    ============================================================ */
 function Pong({ onClose }) {
+  const [phase, dismiss] = useDismiss(onClose);
   const canvasRef  = useRef(null);
   const stateRef   = useRef(null);
   const rafRef     = useRef(null);
@@ -172,7 +174,7 @@ function Pong({ onClose }) {
 
   useEffect(() => {
     function onDown(e) {
-      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Escape') { dismiss(); return; }
       if (e.key === ' ') { toggleStart(); e.preventDefault(); return; }
       keysRef.current[e.key] = true;
       e.preventDefault();
@@ -185,10 +187,10 @@ function Pong({ onClose }) {
       window.removeEventListener('keydown', onDown);
       window.removeEventListener('keyup',   onUp);
     };
-  }, [started, onClose]);
+  }, [started, dismiss]);
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className={`modal-backdrop${phase !== 'open' ? ` is-${phase}` : ''}`} onClick={dismiss}>
       <div
         className="window"
         style={{ width: 'min(500px, 96vw)', marginBottom: 0 }}
@@ -198,7 +200,7 @@ function Pong({ onClose }) {
           <div className="lights"><span></span><span></span><span></span></div>
           <div className="title mono">pong.exe</div>
           <button
-            onClick={onClose}
+            onClick={dismiss}
             style={{ background: 'transparent', border: 'none', font: 'inherit', cursor: 'none', color: 'var(--ink)' }}
           >✕</button>
         </header>
