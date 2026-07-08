@@ -17,7 +17,7 @@ const EXPERIENCE = [
   },
   {
     role: 'Co-Founder',
-    org: 'ReRoute',
+    org: 'Reroute',
     where: 'Toronto, ON',
     when: 'Feb 2026 — Present',
     tag: 'BUILDING',

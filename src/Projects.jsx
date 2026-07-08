@@ -76,7 +76,7 @@ const PROJECTS = [
     art: 'rag',
   },
   {
-    name: 'ReRoute',
+    name: 'Reroute',
     file: 'reroute.tsx',
     blurb: "The GTA's first multimodal transit router across 5 agencies using modified A* over a unified GTFS graph. XGBoost model trained on TTC + GO delay data surfaces real-time reroutes.",
     impact: '5 agencies · XGBoost delays · 2nd @ CTRL HACK DEL 2.0',

@@ -46,7 +46,7 @@ const COMMANDS = {
       'zahadad jarif.',
       '3rd-year CS @ York (Lassonde, GPA 3.70).',
       'currently: innovation lab engineer intern @ 4D.',
-      'side: co-founding ReRoute — multimodal transit for the GTA.',
+      'side: co-founding Reroute — multimodal transit for the GTA.',
       'I build at the intersection of AI tooling, accessibility, and infra',
       'that quietly works.',
     ],
@@ -70,7 +70,7 @@ const COMMANDS = {
     type: 'block',
     lines: [
       '▸ shipping AI tooling demos at 4D (1–2 wk cycles)',
-      '▸ scaling ReRoute beyond MVP → multi-agency live data',
+      '▸ scaling Reroute beyond MVP → multi-agency live data',
       '▸ learning Rust + distributed systems on the side',
       '▸ open to fall 2026 internships',
     ],
@@ -150,7 +150,7 @@ const COMMANDS = {
       '▸ EchoAccess — voice-first gov form accessibility',
       '▸ MemoMuse  — voice memo → produced track (6-stage AI pipeline)',
       '▸ RAG API   — k8s-native retrieval API · sub-2s p95',
-      '▸ ReRoute   — multimodal transit · live at rerouteapp.ca',
+      '▸ Reroute   — multimodal transit · live at rerouteapp.ca',
     ],
   }),
 
@@ -158,7 +158,7 @@ const COMMANDS = {
     type: 'block',
     lines: [
       '2026 ─ now    innovation lab engineer intern @ 4D',
-      '2026 ─ now    co-founder @ ReRoute',
+      '2026 ─ now    co-founder @ Reroute',
       '2026          software engineer @ One Iota Golf',
       '2026 ─ now    software developer & VP events @ YU Blueprint',
     ],
@@ -198,9 +198,9 @@ const COMMANDS = {
       '2023: wrote my first React component. ugly. shipped it.',
       '2023: joined YU Blueprint. met people who actually build things.',
       '2026: One Iota Golf — first real prod deploy. 3am push. it worked.',
-      '2026: started ReRoute in a coffee shop on a napkin.',
+      '2026: started Reroute in a coffee shop on a napkin.',
       '2026: 4D internship. building AI recruiting infra on a 1-week cadence.',
-      '2026: ReRoute goes live. real users. real transit data.',
+      '2026: Reroute goes live. real users. real transit data.',
       '─────────────────────────────────────',
       'still writing this.',
     ],
@@ -220,11 +220,11 @@ const COMMANDS = {
       'DESCRIPTION',
       '       Builds at the intersection of AI tooling, accessibility,',
       '       and infrastructure. Currently shipping at 4D. Co-founded',
-      '       ReRoute. Based in Toronto. GPA 3.70/4.00.',
+      '       Reroute. Based in Toronto. GPA 3.70/4.00.',
       '',
       'OPTIONS',
       '       --intern     Available for fall 2026',
-      '       --cofounder  Currently scaling ReRoute',
+      '       --cofounder  Currently scaling Reroute',
       '       --contact    zahadad14@gmail.com',
       '',
       'BUGS',
@@ -250,7 +250,7 @@ const COMMANDS = {
       '',
       'commit 1d9f33a',
       'Date:   last week',
-      '    feat: ReRoute v2 goes live',
+      '    feat: Reroute v2 goes live',
       '',
       'commit 0b7a2c1',
       '    chore: refactor life goals (again)',
@@ -331,7 +331,7 @@ const COMMANDS = {
       "The authenticity of host 'rerouteapp.ca' can't be established.",
       'ED25519 key fingerprint is SHA256:zahadad/reroute/v2',
       '',
-      'Warning: unauthorized access to ReRoute infra is prohibited.',
+      'Warning: unauthorized access to Reroute infra is prohibited.',
       '(it\'s just a transit app, chill)',
       '',
       'Connection refused. Visit → rerouteapp.ca',
@@ -786,7 +786,7 @@ function About() {
           <Row k="UPTIME"    v={<UptimeTicker/>}/>
           <Row k="LOCATION"  v="Toronto, ON"/>
           <Row k="STATUS"    v={<span><span style={{color:'var(--accent-ink)'}}>●</span> available · fall 2026</span>}/>
-          <Row k="BUILDING"  v="ReRoute · multimodal transit"/>
+          <Row k="BUILDING"  v="Reroute · multimodal transit"/>
           <Row k="LEARNING"  v="Distributed systems · Rust"/>
           <Row k="LISTENING" v={<NowPlaying/>}/>
 
