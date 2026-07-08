@@ -290,7 +290,9 @@ function ChipGrid({ items, title, sub }) {
         <span className="mono muted" style={{ fontSize: 11 }}>{items.length} items</span>
       </div>
       <div className="row wrap" style={{ gap: 8 }}>
-        {items.map(it => <span className="chip" key={it}>{it}</span>)}
+        {items.map((it, i) => (
+          <span className="chip chip-reveal" key={it} style={{ '--i': i }}>{it}</span>
+        ))}
       </div>
     </div>
   );

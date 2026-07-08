@@ -317,8 +317,22 @@ function Hero({ theme, onScrollTo }) {
           </div>
         </div>
 
-        {/* RIGHT — pixel portrait ID card */}
-        <aside style={{ padding: 24, background: 'var(--cream-2)', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        {/* RIGHT — pixel portrait ID card. Fades/slides in a beat after
+            the boot log resolves, so the two columns read as one
+            choreographed arrival instead of the aside just popping in. */}
+        <aside
+          className="hero-portrait-aside"
+          style={{
+            padding: 24,
+            background: 'var(--cream-2)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
+            opacity: booted ? 1 : 0,
+            transform: booted ? 'translateX(0)' : 'translateX(20px)',
+            transition: 'opacity 0.7s var(--ease-out-quint) 0.15s, transform 0.7s var(--ease-out-quint) 0.15s',
+          }}
+        >
           <div className="row between center">
             <span className="label">ID_CARD.PNG</span>
             <span className="mono muted" style={{ fontSize: 11 }}>v2.0</span>

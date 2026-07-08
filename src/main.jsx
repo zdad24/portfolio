@@ -86,7 +86,16 @@ function App() {
      paths never show blank content. Only elements JS can confirm it will
      animate get armed hidden, and a timeout guarantees eventual visibility
      even if the observer never fires (e.g. full-page screenshot tools that
-     resize without dispatching a real scroll). */
+     resize without dispatching a real scroll).
+
+     The fallback only fires if the page never scrolls. A real visitor
+     routinely takes longer than the timeout to scroll from the hero down
+     to lower sections — an unconditional timeout would force those
+     sections into their final "revealed" state off-screen before the
+     visitor ever sees them, silently killing every scroll reveal on the
+     page. The first scroll event is proof a real, scrolling visitor is
+     driving the page, so it cancels the safety net and hands reveals
+     back to the observer for the rest of the session. */
   useLayoutEffect(() => {
     const els = document.querySelectorAll('.reveal');
     els.forEach(el => el.classList.add('armed'));
@@ -99,10 +108,20 @@ function App() {
       });
     }, { threshold: 0.12 });
     els.forEach(el => io.observe(el));
+
+    let scrolled = false;
+    const onScroll = () => { scrolled = true; clearTimeout(fallback); };
+    window.addEventListener('scroll', onScroll, { once: true, passive: true });
+
     const fallback = setTimeout(() => {
-      els.forEach(el => el.classList.add('in'));
+      if (!scrolled) els.forEach(el => el.classList.add('in'));
     }, 2000);
-    return () => { io.disconnect(); clearTimeout(fallback); };
+
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   /* ───────── Sound — bind to interactive hover/click ───────── */

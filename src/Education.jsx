@@ -18,6 +18,7 @@ function Education() {
       <div className="edu-grid">
         {/* Education card */}
         <article
+          className="edu-card"
           style={{
             background: 'var(--cream-2)',
             border: '2px solid var(--line)',
@@ -50,6 +51,7 @@ function Education() {
 
         {/* Certifications card */}
         <article
+          className="edu-card"
           style={{
             background: 'var(--paper)',
             border: '2px solid var(--line)',
