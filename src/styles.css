@@ -455,6 +455,11 @@ a:hover { text-decoration: underline; }
   cursor: none;
   user-select: none;
 }
+.menu-bar button.item {
+  background: transparent;
+  border: none;
+  font: inherit;
+}
 .menu-bar .item:hover {
   background: var(--ink);
   color: var(--paper);
@@ -667,7 +672,14 @@ a:hover { text-decoration: underline; }
   opacity: 0;
   transition: opacity 0.4s;
 }
-[data-mode="dark"] .crt-overlay { opacity: 0.6; mix-blend-mode: screen; }
+[data-mode="dark"] .crt-overlay {
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+  background:
+    repeating-linear-gradient(to bottom,
+      transparent 0, transparent 2px,
+      rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 3px);
+}
 
 /* ============================================================
    Reveal animation (used by IntersectionObserver)
@@ -925,7 +937,7 @@ a:hover { text-decoration: underline; }
    ============================================================ */
 .modal-backdrop {
   position: fixed; inset: 0;
-  background: color-mix(in srgb, var(--ink) 70%, transparent);
+  background: rgba(0, 0, 0, 0.7);
   z-index: var(--z-modal);
   display: grid;
   place-items: center;

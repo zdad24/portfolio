@@ -61,7 +61,6 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           onClick={onTheme}
           title="Cycle theme"
           aria-label={`Cycle theme (current: ${themeLabel})`}
-          style={{ background: 'transparent', border: 'none', font: 'inherit' }}
         >
           {themeLabel}
         </button>
@@ -72,7 +71,6 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           title="Toggle sounds"
           aria-label={sound ? 'Sound on — turn off' : 'Sound off — turn on'}
           aria-pressed={sound}
-          style={{ background: 'transparent', border: 'none', font: 'inherit' }}
         >
           {sound ? <SpeakerOnIcon /> : <SpeakerOffIcon />}
         </button>
@@ -83,7 +81,7 @@ function MenuBar({ theme, mode, onTheme, onMode, sound, onSound }) {
           title="Toggle light/dark"
           aria-label={mode === 'dark' ? 'Dark mode — switch to light' : 'Light mode — switch to dark'}
           aria-pressed={mode === 'dark'}
-          style={{ background: 'transparent', border: 'none', font: 'inherit', fontSize: 14 }}
+          style={{ fontSize: 14 }}
         >
           {mode === 'dark' ? '☾' : '☀'}
         </button>

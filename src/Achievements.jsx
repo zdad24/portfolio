@@ -144,7 +144,7 @@ function AchievementToast({ achievement, index, onDone }) {
           >
             {achievement.title}
           </div>
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.4 }}>
+          <div style={{ fontSize: 11, color: 'color-mix(in srgb, var(--paper) 65%, transparent)', lineHeight: 1.4 }}>
             {achievement.desc}
           </div>
         </div>
